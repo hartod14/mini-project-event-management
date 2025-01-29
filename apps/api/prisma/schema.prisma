@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,12 +7,138 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Transaction {
+  id                 Int           @id @default(autoincrement())
+  event_id           Int
+  user_id            Int
+  voucher_event_id   Int?
+  coupon_user_id     Int?
+  payment_method_id  Int
+  transaction_number String        @db.VarChar(100)
+  total_price        Decimal       @db.Decimal(15, 2)
+  point_used         Int?
+  payment_proof      String?       @db.Text
+  payment_date       DateTime?
+  payment_status     PaymentStatus
+  created_at         DateTime      @default(now())
+  updated_at         DateTime?     @updatedAt
 
-  @@map("samples") // if you want to use snake_case format
+  voucher_event       VoucherEvent?       @relation(fields: [voucher_event_id], references: [id])
+  coupon_user         CouponUser?         @relation(fields: [coupon_user_id], references: [id])
+  payment_method      PaymentMethod       @relation(fields: [payment_method_id], references: [id])
+  transaction_tickets TransactionTicket[]
+
+  @@map("transactions")
+}
+
+model TransactionTicket {
+  id             Int       @id @default(autoincrement())
+  transaction_id Int
+  ticket_type_id Int
+  created_at     DateTime  @default(now())
+  updated_at     DateTime? @updatedAt
+
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+
+  @@map("transaction_tickets")
+}
+
+model CompanyInformation {
+  id           Int    @id @default(autoincrement())
+  about_us     String @db.Text
+  address      String @db.Text
+  email        String @db.VarChar(100)
+  phone        String @db.VarChar(15)
+  social_media Json
+
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  @@map("company_information")
+}
+
+model Faq {
+  id         Int       @id @default(autoincrement())
+  question   String    @db.Text
+  answer     String    @db.Text
+  is_active  IsActive  @default(ACTIVE)
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  @@map("faqs")
+}
+
+model Coupon {
+  id         Int      @id @default(autoincrement())
+  name       String?  @db.VarChar(100)
+  price      Decimal? @db.Decimal(15, 2)
+  created_at DateTime @default(now())
+
+  coupon_users CouponUser[]
+
+  @@map("coupons")
+}
+
+model CouponUser {
+  id           Int           @id @default(autoincrement())
+  user_id      Int
+  coupon_id    Int
+  created_at   DateTime      @default(now())
+  updated_at   DateTime?     @updatedAt
+  transactions Transaction[]
+
+  coupon Coupon @relation(fields: [coupon_id], references: [id])
+
+  @@map("coupons_users")
+}
+
+model Voucher {
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(100)
+  price        Decimal        @db.Decimal(15, 2)
+  start_date   DateTime
+  end_date     DateTime
+  created_at   DateTime       @default(now())
+  updated_at   DateTime?      @updatedAt
+
+  voucher_events VoucherEvent[]
+
+  @@map("vouchers")
+}
+
+model VoucherEvent {
+  id         Int      @id @default(autoincrement())
+  event_id   Int
+  voucher_id Int
+  created_at DateTime @default(now())
+
+  voucher      Voucher       @relation(fields: [voucher_id], references: [id])
+  transactions Transaction[]
+
+  @@map("vouchers_events")
+}
+
+model PaymentMethod {
+  id             Int    @id @default(autoincrement())
+  account_name   String @db.VarChar(45)
+  account_number String @db.VarChar(45)
+  logo           String @db.Text
+
+  transactions Transaction[]
+
+  @@map("payment_methods")
+}
+
+enum IsActive {
+  ACTIVE
+  INACTIVE
+}
+
+enum PaymentStatus {
+  WAITING_FOR_PAYMENT
+  WAITING_FOR_ADMIN_CONFIRMATION
+  DONE
+  REJECTED
+  EXPIRED
+  CANCELED
 }
