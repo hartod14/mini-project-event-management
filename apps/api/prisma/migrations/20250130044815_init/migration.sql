@@ -4,6 +4,30 @@ CREATE TYPE "IsActive" AS ENUM ('ACTIVE', 'INACTIVE');
 -- CreateEnum
 CREATE TYPE "PaymentStatus" AS ENUM ('WAITING_FOR_PAYMENT', 'WAITING_FOR_ADMIN_CONFIRMATION', 'DONE', 'REJECTED', 'EXPIRED', 'CANCELED');
 
+-- CreateEnum
+CREATE TYPE "IsVerified" AS ENUM ('YES', 'NO');
+
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('CUSTOMER', 'EVENT_ORGRANIZER');
+
+-- CreateTable
+CREATE TABLE "users" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "email" VARCHAR(100) NOT NULL,
+    "phone" VARCHAR(15),
+    "password" TEXT NOT NULL,
+    "profile_photo" TEXT,
+    "referral_code" VARCHAR(8) NOT NULL,
+    "point" DECIMAL(15,2) NOT NULL DEFAULT 0,
+    "is_verified" "IsVerified" NOT NULL DEFAULT 'YES',
+    "role" "Role" NOT NULL DEFAULT 'CUSTOMER',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
+
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "transactions" (
     "id" SERIAL NOT NULL,
@@ -114,6 +138,9 @@ CREATE TABLE "payment_methods" (
 
     CONSTRAINT "payment_methods_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_voucher_event_id_fkey" FOREIGN KEY ("voucher_event_id") REFERENCES "vouchers_events"("id") ON DELETE SET NULL ON UPDATE CASCADE;

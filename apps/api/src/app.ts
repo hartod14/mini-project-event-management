@@ -5,14 +5,15 @@ import express, {
   Request,
   Response,
   NextFunction,
+  Application,
   Router,
 } from 'express';
 import cors from 'cors';
 import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
+import { authRouter } from './routers/auth.router';
 
 export default class App {
-  private app: Express;
+  private app: Application;
 
   constructor() {
     this.app = express();
@@ -22,9 +23,9 @@ export default class App {
   }
 
   private configure(): void {
+    this.app.use(express.json());
     this.app.use(cors());
-    this.app.use(json());
-    this.app.use(urlencoded({ extended: true }));
+    // this.app.use(urlencoded({ extended: true }));
   }
 
   private handleError(): void {
@@ -51,14 +52,12 @@ export default class App {
   }
 
   private routes(): void {
-    const sampleRouter = new SampleRouter();
-
     this.app.get('/api', (req: Request, res: Response) => {
       // res.send(`Hello, Purwadhika Student API!`);
       res.send(console.log(process.env.DATABASE_URL));
     });
 
-    this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use('/api/auth', authRouter());
   }
 
   public start(): void {
