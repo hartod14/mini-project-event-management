@@ -1,3 +1,5 @@
+import PanelMenubar from "@/components/PanelMenubar"
+
 export default function PanelLayout({
     children,
 }: Readonly<{
@@ -5,8 +7,9 @@ export default function PanelLayout({
 }>) {
     return (
         <>
-        
-            {children}
+            <PanelMenubar>
+                {children}
+            </PanelMenubar>
         </>
     )
 }
