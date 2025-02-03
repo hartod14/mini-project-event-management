@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function PanelMenubar({ children }: any) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("Home");
+  const [activeMenu, setActiveMenu] = useState("My Ticket");
 
   const adminMenus = [
     { name: "Dashboard", path: "/panel/dashboard" },
@@ -29,14 +29,18 @@ export default function PanelMenubar({ children }: any) {
     if (currentMenu) {
       setActiveMenu(currentMenu.name);
     }
+    const currentMenu2 = accountMenus.find((menu) => menu.path == pathname);
+    if (currentMenu2) {
+      setActiveMenu(currentMenu2.name);
+    }
   }, [pathname]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       {/* Sidebar (dominant) */}
       <div
-        className={`fixed top-0 left-0 h-full bg-gray-800 text-white w-64 p-5 transition-transform transform overflow-y-auto  ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 md:relative md:w-64`}
+        className={`fixed pt-24 md:pt-10 top-0 left-0 h-screen bg-gray-800 text-white w-64 p-5 transition-transform transform overflow-y-auto ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 md:w-64`}
       >
         <h2 className="text-xl font-bold mb-4">LOGO</h2>
         <nav>
@@ -48,7 +52,7 @@ export default function PanelMenubar({ children }: any) {
                 </svg>
                 <span>Explore Event</span>
               </Link>
-              <Link href={"/panel/ticket"} className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded mb-3">
+              <Link href={"/panel/ticket"} className={`flex items-center gap-2 ${pathname == '/panel/ticket' ? "bg-gray-700" : "hover:bg-gray-700"} hover:bg-gray-700 p-2 rounded mb-3`}>
                 <span>My Ticket</span>
               </Link>
             </li>
@@ -90,9 +94,9 @@ export default function PanelMenubar({ children }: any) {
       </div>
 
       {/* Main Content with Topbar */}
-      <div className="flex flex-col flex-1">
+      <div className={`flex flex-col flex-1 min-h-screen transition-all ${isOpen ? "ml-64" : "ml-0 md:ml-64"}`}>
         {/* Topbar */}
-        <div className="w-100 top-0 left-0 flex items-center justify-between bg-gray-900 text-white p-4">
+        <div className="fixed md:left-64 top-0 left-0 flex items-center justify-between bg-gray-900 text-white p-4" style={{ width: "-webkit-fill-available" }}>
           <button className="md:hidden p-2 rounded bg-gray-700" onClick={() => setIsOpen(!isOpen)}>
             ☰
           </button>
@@ -101,7 +105,7 @@ export default function PanelMenubar({ children }: any) {
         </div>
 
         {/* Page Content */}
-        <div className="p-10 flex flex-col gap-8">
+        <div className="p-10 pt-24 flex flex-col gap-8">
           {children}
         </div>
       </div>

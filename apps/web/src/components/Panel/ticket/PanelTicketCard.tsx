@@ -1,6 +1,7 @@
+import SmallBadge from "@/components/common/badges/SmallBadge";
 import Image from "next/image";
 
-export default function PanelEventCard() {
+export default function PanelTicketCard() {
     return (
         <div className="flex gap-12 border-b-2 border-gray-100">
             <div className="w-[240px] h-[120px] rounded-xl">
@@ -13,9 +14,7 @@ export default function PanelEventCard() {
                 />
             </div>
             <div>
-                <div className="bg-yellow-300 px-2 py-1 rounded w-fit mb-2 font-semibold text-xs">
-                    Menunggu Persetujuan
-                </div>
+                <SmallBadge status="waiting_for_payment" />
                 <h2 className="font-bold text-xl mb-2">A Musical Drama: Symphony of Dreams </h2>
                 <div className="flex items-center gap-2 mb-1">
                     <i>

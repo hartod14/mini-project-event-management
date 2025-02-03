@@ -1,9 +1,9 @@
-import PanelEventCard from "@/components/PanelEventCardPanel";
+import PanelTicketCard from "@/components/Panel/ticket/PanelTicketCard";
 
 export default function PanelEvent() {
     return (
         <>
-         <PanelEventCard />
+         <PanelTicketCard />
         </>
     )
 }
