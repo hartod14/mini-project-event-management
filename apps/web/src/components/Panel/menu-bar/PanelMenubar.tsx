@@ -105,7 +105,7 @@ export default function PanelMenubar({ children }: any) {
         </div>
 
         {/* Page Content */}
-        <div className="p-10 pt-24 flex flex-col gap-8">
+        <div className="p-10 pt-24 ">
           {children}
         </div>
       </div>

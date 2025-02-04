@@ -11,8 +11,33 @@ export default function PanelEventDetail() {
     const params = useParams<{ slug: string }>();
     return (
         <>
-            <StatusBadge status={"waiting_for_admin_confirmation"} />
-            <h1 className="font-bold text-2xl pt-4 pb-3">Detail Pemesanan</h1>
+            <StatusBadge status={"waiting_for_payment"} />
+            <section>
+                <div className="">
+                    <h1 className="text-center pt-5 pb-3">Sisa Waktu Pembayaran</h1>
+                    <div className="flex justify-center items-center">
+                        <Countdown targetTimestamp={targetDate} />
+                    </div>
+                    <p className="my-3 text-center">
+                        Complete your payment before Sat, Jan 25, 2025, at 06:36 PM.
+                    </p>
+                    <div className="flex gap-48 my-8 items-center justify-center">
+                        <div className="">
+                            <p>Total Pembayaran</p>
+                            <p className="font-semibold">Rp 200.000</p>
+                        </div>
+                        <div className="">
+                            <p>No. Tujuan</p>
+                            <p className="font-semibold">BCA - 86421322485</p>
+                        </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                        <Button color={'primary'} textColor={'text-white'} name={"Upload Bukti Pembayaran"} />
+                    </div>
+
+                </div>
+            </section>
+            <hr className="border-t border-gray-200 my-4" />
             <section>
                 <div className="flex gap-12">
                     <div className="w-[240px] h-[140px] rounded-xl">
@@ -89,29 +114,8 @@ export default function PanelEventDetail() {
                         </tbody>
                     </table>
                 </div>
-            </section>
-            <h1 className="font-bold text-2xl pt-4 pb-3">Detail Harga</h1>
-            <section>
-                <div className="flex flex-col gap-3">
-                    <div className="flex justify-between">
-                        <p>Total Ticket Price</p>
-                        <p>Rp 1.000.000</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>Voucher ABC</p>
-                        <p>- Rp 50.000</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>Total Payment</p>
-                        <p className="font-bold">Rp 950.000</p>
-                    </div>
-                </div>
-            </section>
-            <h1 className="font-bold text-2xl pt-4 pb-3">Bukti Pembayaran</h1>
-            <section>
-                <p>BCA - 012321312</p>
-            </section>
 
+            </section>
         </>
     )
 }
