@@ -1,12 +1,11 @@
 "use client"
 
 import StatusBadge from "@/components/common/badges/StatusBadge";
-import Button from "@/components/common/buttons/Button";
 import Countdown from "@/components/Panel/ticket/Countdown";
 import Image from "next/image";
 import { useParams } from "next/navigation"
 
-export default function PanelEventDetail() {
+export default function PanelTicketDetail() {
     const targetDate = new Date("2025-02-04T14:00:00").getTime(); // This value could be dynamic
     const params = useParams<{ slug: string }>();
     return (
@@ -48,7 +47,7 @@ export default function PanelEventDetail() {
 
                     </div>
                 </div>
-                <div className="relative overflow-x-auto mt-5">
+                <div className=" overflow-x-auto mt-5">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -109,7 +108,14 @@ export default function PanelEventDetail() {
             </section>
             <h1 className="font-bold text-2xl pt-4 pb-3">Bukti Pembayaran</h1>
             <section>
-                <p>BCA - 012321312</p>
+                <p className="mb-3">BCA - 012321312</p>
+                <Image
+                    src={'/buktibayar.jpg'}
+                    width={420}
+                    height={200}
+                    alt="bukti bayar"
+                    className="object-cover rounded-xl"
+                />
             </section>
 
         </>

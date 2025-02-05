@@ -1,12 +1,12 @@
 "use client"
 
 import StatusBadge from "@/components/common/badges/StatusBadge";
-import Button from "@/components/common/buttons/Button";
+import PanelButton from "@/components/common/buttons/PanelButton";
 import Countdown from "@/components/Panel/ticket/Countdown";
 import Image from "next/image";
 import { useParams } from "next/navigation"
 
-export default function PanelEventDetail() {
+export default function PanelTicketDetail2() {
     const targetDate = new Date("2025-02-04T14:00:00").getTime(); // This value could be dynamic
     const params = useParams<{ slug: string }>();
     return (
@@ -32,7 +32,7 @@ export default function PanelEventDetail() {
                         </div>
                     </div>
                     <div className="mt-4 text-center">
-                        <Button color={'primary'} textColor={'text-white'} name={"Upload Bukti Pembayaran"} />
+                        <PanelButton color={'primary'} textColor={'text-white'} name={"Upload Bukti Pembayaran"} />
                     </div>
 
                 </div>
@@ -73,7 +73,7 @@ export default function PanelEventDetail() {
 
                     </div>
                 </div>
-                <div className="relative overflow-x-auto mt-5">
+                <div className=" overflow-x-auto mt-5">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>

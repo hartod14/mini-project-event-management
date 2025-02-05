@@ -4,10 +4,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function PanelMenubar({ children }: any) {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function PanelMenubar({ children }: Props) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("My Ticket");
+
+  const commonMenus = [
+    { name: "My Ticket", path: "/panel/ticket" },
+  ];
 
   const adminMenus = [
     { name: "Dashboard", path: "/panel/dashboard" },
@@ -25,15 +33,18 @@ export default function PanelMenubar({ children }: any) {
   ];
 
   useEffect(() => {
-    const currentMenu = adminMenus.find((menu) => menu.path == pathname);
+    const currentMenu =
+      adminMenus.find((menu) => menu.path == pathname) ||
+      accountMenus.find((menu) => menu.path == pathname) ||
+      commonMenus.find((menu) => menu.path == pathname) ;
+
+    // console.log(currentMenu);
+
     if (currentMenu) {
       setActiveMenu(currentMenu.name);
     }
-    const currentMenu2 = accountMenus.find((menu) => menu.path == pathname);
-    if (currentMenu2) {
-      setActiveMenu(currentMenu2.name);
-    }
   }, [pathname]);
+
 
   return (
     <div className="flex">
@@ -52,12 +63,16 @@ export default function PanelMenubar({ children }: any) {
                 </svg>
                 <span>Explore Event</span>
               </Link>
-              <Link href={"/panel/ticket"} className={`flex items-center gap-2 ${pathname == '/panel/ticket' ? "bg-gray-700" : "hover:bg-gray-700"} hover:bg-gray-700 p-2 rounded mb-3`}>
+              <Link
+                href={"/panel/ticket"}
+                className={`flex items-center gap-2 ${pathname == '/panel/ticket' ? "bg-gray-700" : "hover:bg-gray-700"} p-2 rounded mb-3`}
+                onClick={() => setIsOpen(false)}
+              >
                 <span>My Ticket</span>
               </Link>
             </li>
           </ul>
-          {/* <h2 className="mt-5 mb-3 font-bold text-lg">Admin Panel</h2>
+          <h2 className="mt-5 mb-3 font-bold text-lg">Admin Panel</h2>
           <ul>
             {adminMenus.map((menu) => (
               <li key={menu.path} className="mb-2">
@@ -71,7 +86,7 @@ export default function PanelMenubar({ children }: any) {
                 </Link>
               </li>
             ))}
-          </ul> */}
+          </ul>
           <h2 className="mt-5 mb-3 font-bold text-lg">Manage Account</h2>
           <ul>
             {accountMenus.map((menu) => (

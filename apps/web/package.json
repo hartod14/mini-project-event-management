@@ -10,10 +10,13 @@
     "test": "npx cypress verify & cypress run --component"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
+    "sweetalert2": "^11.10.2",
     "cross-env": "^7.0.3",
     "next": "15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@material-tailwind/react": "^2.1.7"
   },
   "devDependencies": {
     "@types/node": "^20",
