@@ -11,6 +11,7 @@ import express, {
 import cors from 'cors';
 import { PORT } from './config';
 import { authRouter } from './routers/auth.router';
+import { panelEventRouter } from './routers/panel/event.router';
 
 export default class App {
   private app: Application;
@@ -58,6 +59,9 @@ export default class App {
     });
 
     this.app.use('/api/auth', authRouter());
+
+    //panel
+    this.app.use('/api/panel/events', panelEventRouter());
   }
 
   public start(): void {

@@ -11,6 +11,28 @@ CREATE TYPE "IsVerified" AS ENUM ('YES', 'NO');
 CREATE TYPE "Role" AS ENUM ('CUSTOMER', 'EVENT_ORGRANIZER');
 
 -- CreateTable
+CREATE TABLE "events" (
+    "id" SERIAL NOT NULL,
+    "event_category_id" INTEGER NOT NULL,
+    "city_id" INTEGER,
+    "name" VARCHAR(100) NOT NULL,
+    "host_name" VARCHAR(100) NOT NULL,
+    "address" TEXT NOT NULL,
+    "description" TEXT,
+    "term_condition" TEXT,
+    "start_date" TIMESTAMP(3) NOT NULL,
+    "end_date" TIMESTAMP(3) NOT NULL,
+    "is_active" "IsActive" NOT NULL DEFAULT 'ACTIVE',
+    "image" TEXT NOT NULL,
+    "map_image" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
+    "deleted_at" TIMESTAMP(3),
+
+    CONSTRAINT "events_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,

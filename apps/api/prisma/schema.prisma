@@ -7,6 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Event {
+  id                Int       @id @default(autoincrement())
+  event_category_id Int
+  city_id           Int?
+  name              String    @db.VarChar(100)
+  host_name         String    @db.VarChar(100)
+  address           String
+  description       String?   @db.Text
+  term_condition    String?   @db.Text
+  start_date        DateTime
+  end_date          DateTime
+  is_active         IsActive  @default(ACTIVE)
+  image             String    @db.Text
+  map_image         String?   @db.Text
+  created_at        DateTime  @default(now())
+  updated_at        DateTime? @updatedAt
+  deleted_at        DateTime?
+
+  @@map("events")
+}
+
 model User {
   id            Int        @id @default(autoincrement())
   name          String     @db.VarChar(100)
