@@ -21,7 +21,106 @@ model User {
   created_at    DateTime   @default(now())
   updated_at    DateTime?  @updatedAt
 
+  transactions  Transaction[]
+  reviews       Review[]
+  referral_logs     ReferralLog[]  @relation("ReferralLogToUser")
+  referrer_logs     ReferralLog[]  @relation("ReferralLogToReferrer")
+  coupon_users  CouponUser[]
+
   @@map("users")
+}
+
+model Event {
+  id              Int            @id @default(autoincrement())
+  event_category_id Int          
+  city_id         Int?
+  slug         String    @unique           
+  name            String         @db.VarChar(100)
+  host_name       String         @db.VarChar(100)
+  address         String         @db.Text
+  description     String?        @db.Text
+  term_condition  String?        @db.Text
+  start_date      DateTime       @db.Timestamp
+  end_date        DateTime       @db.Timestamp
+  status          EventStatus    
+  image           String         @db.Text
+  map_image       String?        @db.Text
+  created_at      DateTime       @default(now())
+  updated_at      DateTime?      @updatedAt
+  isDeleted       DateTime?
+
+  event_category  EventCategory  @relation(fields: [event_category_id], references: [id])
+  city            City?          @relation(fields: [city_id], references: [id])
+  ticket_types    TicketType[]    
+  transactions    Transaction[]
+  reviews         Review[]
+  voucher_events  VoucherEvent[]
+
+  @@map("events")
+}
+
+model EventCategory {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(100) @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  events     Event[]
+
+  @@map("event_categories")
+}
+
+model City {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(45) @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  events     Event[]
+
+  @@map("cities")
+}
+
+model TicketType {
+  id                   Int       @id @default(autoincrement())
+  event_id             Int
+  name                 String    @db.VarChar(100)
+  price                Decimal   @db.Decimal(15, 2)
+  quota                Int?
+  purchaseable_limit_time DateTime @db.Timestamp
+  created_at           DateTime  @default(now())
+  updated_at           DateTime? @updatedAt
+
+  event                Event     @relation(fields: [event_id], references: [id])
+  transaction_tickets  TransactionTicket[]
+
+  @@map("ticket_types")
+}
+
+model Review {
+  id          Int       @id @default(autoincrement())
+  rating_score Int      
+  event_id    Int
+  user_id     Int
+  description String?   @db.Text
+  created_at  DateTime  @default(now())
+
+  event       Event     @relation(fields: [event_id], references: [id])
+  user        User      @relation(fields: [user_id], references: [id])
+
+  @@map("reviews")
+}
+
+model ReferralLog {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  user_id     Int
+  referrer_id Int
+  created_at  DateTime @default(now()) @db.Timestamp
+
+  user      User @relation("ReferralLogToUser", fields: [user_id], references: [id])
+  referrer  User @relation("ReferralLogToReferrer", fields: [referrer_id], references: [id])
+
+  @@map("referral_logs")
 }
 
 model Transaction {
@@ -40,9 +139,11 @@ model Transaction {
   created_at         DateTime      @default(now())
   updated_at         DateTime?     @updatedAt
 
-  voucher_event       VoucherEvent?       @relation(fields: [voucher_event_id], references: [id])
-  coupon_user         CouponUser?         @relation(fields: [coupon_user_id], references: [id])
-  payment_method      PaymentMethod       @relation(fields: [payment_method_id], references: [id])
+  event              Event         @relation(fields: [event_id], references: [id])
+  user               User          @relation(fields: [user_id], references: [id])
+  voucher_event      VoucherEvent? @relation(fields: [voucher_event_id], references: [id])
+  coupon_user        CouponUser?   @relation(fields: [coupon_user_id], references: [id])
+  payment_method     PaymentMethod @relation(fields: [payment_method_id], references: [id])
   transaction_tickets TransactionTicket[]
 
   @@map("transactions")
@@ -56,6 +157,7 @@ model TransactionTicket {
   updated_at     DateTime? @updatedAt
 
   transaction Transaction @relation(fields: [transaction_id], references: [id])
+    ticket_type    TicketType  @relation(fields: [ticket_type_id], references: [id])
 
   @@map("transaction_tickets")
 }
@@ -105,6 +207,7 @@ model CouponUser {
   transactions Transaction[]
 
   coupon Coupon @relation(fields: [coupon_id], references: [id])
+  user   User   @relation(fields: [user_id], references: [id])
 
   @@map("coupons_users")
 }
@@ -130,6 +233,7 @@ model VoucherEvent {
   created_at DateTime @default(now())
 
   voucher      Voucher       @relation(fields: [voucher_id], references: [id])
+  event        Event         @relation(fields: [event_id], references: [id])
   transactions Transaction[]
 
   @@map("vouchers_events")
@@ -168,4 +272,9 @@ enum IsVerified {
 enum Role {
   CUSTOMER
   EVENT_ORGRANIZER
+}
+
+enum EventStatus {
+  ACTIVE
+  INACTIVE
 }

@@ -1,11 +1,18 @@
-import { Router } from "express"
-import authController from "../controllers/auth.controller";
+import { Router } from 'express';
+import { registerSchema } from '@/models/user.model';
+import { registerValidation, verifyUser } from '@/middalewares/auth.middleware';
+import authController from '@/controllers/auth.controller';
 
 export const authRouter = () => {
-    const router = Router()
+  const router = Router();
 
-    // router.post("/new", authController.signUp);
-    router.post("/", authController.signIn);
+  router.post(
+    '/new',
+    registerValidation(registerSchema),
+    authController.signUp,
+  );
+  router.post('/', authController.signIn);
+  router.patch('/:id', verifyUser, authController.updateUser);
 
-    return router;
-}
+  return router;
+};
