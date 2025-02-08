@@ -1,3 +1,4 @@
+import { PlusIcon } from "@heroicons/react/24/outline";
 import React, { FC } from "react";
 
 interface ButtonListProps {
@@ -8,7 +9,7 @@ interface ButtonListProps {
   position?: "justify-start" | "justify-end";
 }
 
-const ButtonList: FC<ButtonListProps> = (props) => {
+export default function ButtonList(props: ButtonListProps) {
   const { onAdd, onClose, onSave, position = "justify-end", onScan } = props;
 
   return (
@@ -23,10 +24,11 @@ const ButtonList: FC<ButtonListProps> = (props) => {
       )}
       {onAdd && (
         <button
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900 transition flex items-center gap-1"
           onClick={onAdd}
         >
-          Tambah
+          <PlusIcon strokeWidth={2} width={24} height={24} />
+          <span>Add New</span>
         </button>
       )}
       {onClose && (
@@ -42,11 +44,9 @@ const ButtonList: FC<ButtonListProps> = (props) => {
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
           type="submit"
         >
-          Simpan
+          Submit
         </button>
       )}
     </div>
   );
 };
-
-export default ButtonList;

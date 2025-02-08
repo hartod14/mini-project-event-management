@@ -14,16 +14,16 @@ export default function PanelMenubar({ children }: Props) {
   const [activeMenu, setActiveMenu] = useState("My Ticket");
 
   const commonMenus = [
-    { name: "My Ticket", path: "/panel/ticket" },
+    { name: "My Ticket", path: "/panel/tickets" },
   ];
 
   const adminMenus = [
-    { name: "Dashboard", path: "/panel/dashboard" },
-    { name: "Voucher", path: "/panel/voucher" },
-    { name: "Event", path: "/panel/event" },
-    { name: "Transaction", path: "/panel/transaction" },
-    { name: "Banner", path: "/panel/banner" },
-    { name: "FAQ", path: "/panel/faq" },
+    { name: "Dashboard", path: "/panel/dashboards" },
+    { name: "Voucher", path: "/panel/vouchers" },
+    { name: "Event", path: "/panel/events" },
+    { name: "Transaction", path: "/panel/transactions" },
+    { name: "Banner", path: "/panel/banners" },
+    { name: "FAQ", path: "/panel/faqs" },
     { name: "Contact Information", path: "/panel/contact-information" },
   ];
 
@@ -36,7 +36,7 @@ export default function PanelMenubar({ children }: Props) {
     const currentMenu =
       adminMenus.find((menu) => menu.path == pathname) ||
       accountMenus.find((menu) => menu.path == pathname) ||
-      commonMenus.find((menu) => menu.path == pathname) ;
+      commonMenus.find((menu) => menu.path == pathname);
 
     // console.log(currentMenu);
 
@@ -48,7 +48,7 @@ export default function PanelMenubar({ children }: Props) {
 
   return (
     <div className="flex">
-      {/* Sidebar (dominant) */}
+      {/* Sidebar */}
       <div
         className={`fixed pt-24 md:pt-10 top-0 left-0 h-screen bg-gray-800 text-white w-64 p-5 transition-transform transform overflow-y-auto ${isOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 md:w-64`}
@@ -56,13 +56,15 @@ export default function PanelMenubar({ children }: Props) {
         <h2 className="text-xl font-bold mb-4">LOGO</h2>
         <nav>
           <ul>
-            <li>
+            <li className="text-sm">
               <Link href={"/"} className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded mb-3">
                 <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
                 </svg>
                 <span>Explore Event</span>
               </Link>
+            </li>
+            <li className="text-sm">
               <Link
                 href={"/panel/ticket"}
                 className={`flex items-center gap-2 ${pathname == '/panel/ticket' ? "bg-gray-700" : "hover:bg-gray-700"} p-2 rounded mb-3`}
@@ -72,10 +74,10 @@ export default function PanelMenubar({ children }: Props) {
               </Link>
             </li>
           </ul>
-          <h2 className="mt-5 mb-3 font-bold text-lg">Admin Panel</h2>
+          <h2 className="mt-5 mb-3 font-bold text">Admin Panel</h2>
           <ul>
             {adminMenus.map((menu) => (
-              <li key={menu.path} className="mb-2">
+              <li key={menu.path} className="mb-2 text-sm">
                 <Link
                   href={menu.path}
                   className={`block p-2 rounded ${activeMenu == menu.name ? "bg-gray-700" : "hover:bg-gray-700"
@@ -90,7 +92,7 @@ export default function PanelMenubar({ children }: Props) {
           <h2 className="mt-5 mb-3 font-bold text-lg">Manage Account</h2>
           <ul>
             {accountMenus.map((menu) => (
-              <li key={menu.path} className="mb-2">
+              <li key={menu.path} className="mb-2 text-sm">
                 <Link
                   href={menu.path}
                   className={`block p-2 rounded ${activeMenu == menu.name ? "bg-gray-700" : "hover:bg-gray-700"
@@ -102,13 +104,13 @@ export default function PanelMenubar({ children }: Props) {
               </li>
             ))}
           </ul>
-          <Link href={"/ticket"} className="flex items-center gap-2 text-red-500 p-2 rounded my-3">
+          <Link href={"/ticket"} className="flex items-center gap-2 text-red-500 p-2 rounded my-3 text-sm">
             <span>Keluar</span>
           </Link>
         </nav>
       </div>
 
-      {/* Main Content with Topbar */}
+      {/* Topbar */}
       <div className={`flex flex-col flex-1 min-h-screen transition-all ${isOpen ? "ml-64" : "ml-0 md:ml-64"}`}>
         {/* Topbar */}
         <div className="fixed md:left-64 top-0 left-0 flex items-center justify-between bg-gray-900 text-white p-4" style={{ width: "-webkit-fill-available" }}>
