@@ -1,6 +1,6 @@
 "use client";
 
-import { IStatusBadgeProps } from "@/interfaces/TicketInterface";
+import { IStatusBadgeProps } from "@/interfaces/ticket.interface";
 
 const statusStyles: Record<IStatusBadgeProps["status"], { bg: string; text: string; label: string }> = {
     waiting_for_payment: { bg: "bg-yellow-300", text: "text-yellow-700", label: "Waiting for Payment" },

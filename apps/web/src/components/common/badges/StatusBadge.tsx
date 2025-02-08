@@ -1,6 +1,6 @@
 "use client";
 
-import { IStatusBadgeProps } from "@/interfaces/TicketInterface";
+import { IStatusBadgeProps } from "@/interfaces/ticket.interface";
 
 // Define the color mappings and labels for each status
 const statusStyles: { [key in IStatusBadgeProps["status"]]: { bg: string; dot: string; text: string; textColor: string } } = {

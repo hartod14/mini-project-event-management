@@ -1,18 +1,11 @@
-// import { getBanners } from "@/axios/repository/admin/banners";
 // import { deleteEvents, getEvents } from "@/axios/repository/admin/events";
 import ButtonAction from "@/components/common/buttons/PanelButtonAction";
 import { LoadingContext } from "@/context/LoadingContext";
-// import { EventsResponse } from "@/models/Events";
-import Image from "next/image";
+import { panelGetEvents } from "@/helpers/handlers/apis/event.api";
+import { IEventInterface } from "@/interfaces/event.interface";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
-interface EventsResponse {
-    id: number;
-    name: string;
-    schedule: string;
-    location: string;
-}
 export default function EventsListViewModel() {
     const [table, setTable] = useState({
         head: ["name", "schedule", "location", "action"],
@@ -20,46 +13,20 @@ export default function EventsListViewModel() {
     });
     const router = useRouter();
     const loading = useContext(LoadingContext);
-    
+
     async function getEventList() {
         loading?.setLoading(true);
 
         const body: any = [];
 
-        const data: EventsResponse[] = [
-            {
-                id: 1,
-                name: 'test',
-                location: 'test',
-                schedule: 'test',
-            },
-            {
-                id: 2,
-                name: 'test2',
-                location: 'test2',
-                schedule: 'test2',
-            },
-        ]
+        const data: IEventInterface[] = (await panelGetEvents()).data;
 
         if (data) {
             data.map((row, index) => {
                 body.push([
                     row.name,
-                    row.location,
-                    row.schedule,
-                    // <div
-                    //     key={"description" + index}
-                    //     dangerouslySetInnerHTML={{ __html: row.description }}
-                    // />,
-                    // <Image
-                    //     alt="Events"
-                    //     src={row.file_storage.path}
-                    //     width={100}
-                    //     height={100}
-                    //     key={row.file_storage.path}
-                    //     className="object-cover"
-                    // />,
-
+                    row.start_date,
+                    row.city_id,
                     <ButtonAction
                         key={"button"}
                         // onDelete={async () => {
