@@ -68,6 +68,10 @@ class PanelEventService {
                 },
                 // deleted_at: null,
             },
+            include: {
+                city: true,
+                event_category:true
+            },
 
             ...pagination(Number(page), Number(limit)),
         });

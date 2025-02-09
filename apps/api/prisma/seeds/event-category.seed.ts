@@ -5,11 +5,11 @@ import { Prisma } from "@prisma/client";
 export const eventCategorySeed: Prisma.EventCategoryCreateManyInput[] = [
   {
     id: 1,
-    name: 'Olahraga',
+    name: 'Sport',
   },
   {
     id: 2,
-    name: 'Musik',
+    name: 'Music',
   },
   {
     id: 3,
@@ -17,10 +17,10 @@ export const eventCategorySeed: Prisma.EventCategoryCreateManyInput[] = [
   },
   {
     id: 4,
-    name: 'Teknologi',
+    name: 'Technologies',
   },
   {
     id: 5,
-    name: 'Seni',
+    name: 'Art',
   },
 ];

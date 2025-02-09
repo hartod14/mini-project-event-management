@@ -1,4 +1,4 @@
-import PanelMenubar from "@/components/Panel/menu-bar/PanelMenubar"
+import PanelMenubar from "@/components/panel/menu-bar/PanelMenubar"
 import LoadingProvider from "@/context/LoadingContext"
 
 export default function PanelLayout({
@@ -7,12 +7,10 @@ export default function PanelLayout({
     children: React.ReactNode
 }>) {
     return (
-        <body>
-            <LoadingProvider>
-                <PanelMenubar>
-                    {children}
-                </PanelMenubar>
-            </LoadingProvider>
-        </body>
+        <LoadingProvider>
+            <PanelMenubar>
+                {children}
+            </PanelMenubar>
+        </LoadingProvider>
     )
 }

@@ -1,6 +1,7 @@
 // import { deleteEvents, getEvents } from "@/axios/repository/admin/events";
 import ButtonAction from "@/components/common/buttons/PanelButtonAction";
 import { LoadingContext } from "@/context/LoadingContext";
+import { formatDate } from "@/helpers/format.time";
 import { panelGetEvents } from "@/helpers/handlers/apis/event.api";
 import { IEventInterface } from "@/interfaces/event.interface";
 import { log } from "console";
@@ -14,7 +15,7 @@ export default function EventsListViewModel() {
     const [total, setTotal] = useState<number>(0)
     const [totalPage, setTotalPage] = useState<number>(0)
     const [table, setTable] = useState({
-        head: ["name", "schedule", "location", "action"],
+        head: ["name", "category", "host", "schedule", "location", "status", "action"],
         body: [],
     });
     const router = useRouter();
@@ -32,10 +33,15 @@ export default function EventsListViewModel() {
 
         if (data) {
             data.map((row, index) => {
+                let startDate = formatDate(row.start_date)
+                let endDate = formatDate(row.end_date)
                 body.push([
                     row.name,
-                    row.start_date,
-                    row.city_id,
+                    row.event_category.name,
+                    row.host_name,
+                    startDate == endDate ? `${startDate} ` : `${startDate} - ${endDate}`,
+                    row.city.name,
+                    row.status == 'ACTIVE' ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>,
                     <ButtonAction
                         key={"button"}
                         // onDelete={async () => {
@@ -78,7 +84,15 @@ export default function EventsListViewModel() {
         getEventList();
         // console.log(total);
 
-    }, [page, limit]);
+    }, [page]);
+
+    useEffect(() => {
+        // console.log(total);
+        setPage(1);
+        getEventList();
+        // console.log(total);
+
+    }, [limit]);
 
     useEffect(() => {
         const handler = setTimeout(() => {
