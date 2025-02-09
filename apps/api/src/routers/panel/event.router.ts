@@ -9,7 +9,7 @@ export const panelEventRouter = () => {
     router.get("/", panelEventController.getEvents);
     // router.get("/:slug", panelEventController.getProductBySlug);
     // router.post("/", panelEventController.createProduct);
-    // router.delete("/:id", panelEventController.deleteProduct);
+    // router.delete("/:id", panelEventController.deleteevent);
     // router.patch("/:id", panelEventController.updateProduct);
 
     return router;

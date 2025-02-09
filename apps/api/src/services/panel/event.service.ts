@@ -66,10 +66,34 @@ class PanelEventService {
                     contains: String(search || ""),
                     mode: "insensitive"
                 },
-                deleted_at: null,
+                // deleted_at: null,
             },
 
             ...pagination(Number(page), Number(limit)),
+        });
+    }
+
+    async countTotal(req: Request) {
+        const { search } = req.query
+        return await prisma.event.count({
+            where: {
+                name: {
+                    contains: String(search || ""),
+                    mode: "insensitive"
+                }
+            }
+        })
+    }
+
+    async delete(req: Request) {
+        const id = Number(req.params.id);
+        await prisma.event.update({
+            data: {
+                isDeleted: new Date(),
+            },
+            where: {
+                id,
+            },
         });
     }
 }

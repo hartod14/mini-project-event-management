@@ -21,3 +21,17 @@ export const responseHandler = (
     data,
   });
 };
+
+export const responsHandlerPagination = (
+  res: Response,
+  message: String,
+  data: any,
+  total_data: number,
+  code?: number,
+) => {
+  return res.status(code || 200).send({
+    message,
+    total_data,
+    data
+  })
+}

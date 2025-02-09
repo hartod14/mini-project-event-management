@@ -24,7 +24,7 @@ export default function ButtonList(props: ButtonListProps) {
       )}
       {onAdd && (
         <button
-          className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900 transition flex items-center gap-1"
+          className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-950 transition flex items-center gap-1"
           onClick={onAdd}
         >
           <PlusIcon strokeWidth={2} width={24} height={24} />

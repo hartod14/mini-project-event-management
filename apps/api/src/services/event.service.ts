@@ -77,7 +77,7 @@ class eventService {
     });
   }
   async getList(req: Request) {
-    const { page, name } = req.query;
+    const { page, limit, name } = req.query;
     return await prisma.event.findMany({
       where: {
         name: {
@@ -85,7 +85,8 @@ class eventService {
         },
         isDeleted: null,
       },
-      ...pagination(Number(page)),
+      
+      ...pagination(Number(page), Number(limit)),
     });
   }
 }
