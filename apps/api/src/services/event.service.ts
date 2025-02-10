@@ -56,6 +56,7 @@ class eventService {
       where: { id },
     });
   }
+
   async delete(req: Request) {
     const id = Number(req.params.id);
     await prisma.event.update({
