@@ -12,6 +12,8 @@ import cors from 'cors';
 import { PORT } from './config';
 import { authRouter } from './routers/auth.router';
 import { panelEventRouter } from './routers/panel/event.router';
+import { eventRouter } from './routers/event.router';
+import { reviewRouter } from './routers/review.router';
 
 export default class App {
   private app: Application;
@@ -57,7 +59,8 @@ export default class App {
       // res.send(`Hello, Purwadhika Student API!`);
       res.send(console.log(process.env.DATABASE_URL));
     });
-
+    this.app.use('/api/reviews', reviewRouter());
+    this.app.use('/api/events', eventRouter());
     this.app.use('/api/auth', authRouter());
 
     //panel
