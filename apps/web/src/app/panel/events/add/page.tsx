@@ -7,6 +7,7 @@ import { storeEventValidator } from "@/validators/event.validator";
 import { storeEventInit } from "@/helpers/formiks/event.formik";
 import { Alert, Snackbar } from "@mui/material";
 import { InputField } from "@/components/common/inputs/InputField";
+import { InputFieldTextarea } from "@/components/common/inputs/InputFieldTextarea";
 
 // import EventsAddView from "@/components/pages/landing-page/events/add/EventsAddView";
 // const { errors, handleSubmit, id, onSubmit, register, reset, router, urlImage, watch, getValues, setValue } = EventsAddViewModel();
@@ -36,8 +37,10 @@ export default function PanelAddEvent() {
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           <InputField type="text" id="name" name="name" label="Name" formik={formik} />
           <InputField type="text" id="host_name" name="host_name" label="Host Name" formik={formik} />
-          <InputField type="datetime-local" id="start_date" name="start_date" label="Start Date" formik={formik} />
-          <InputField type="datetime-local" id="end_date" name="end_date" label="End Date" formik={formik} />
+          <InputField type="date" id="date" name="date" label="Date" formik={formik} />
+          <InputField type="time" id="start_time" name="start_time" label="Start Time" formik={formik} />
+          <InputField type="time" id="end_time" name="end_time" label="End Time" formik={formik} />
+          <InputFieldTextarea id="address" name="address" label="Address (optional)" formik={formik} />
         </div>
 
         <p className="mb-4 text-red-400">{errMessage}</p>
