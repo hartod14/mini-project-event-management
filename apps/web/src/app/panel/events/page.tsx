@@ -1,9 +1,9 @@
 "use client"
 
+import EventsListViewModel from "@/components/Panel/pages/event/list/EventListViewModel";
 import ButtonList from "@/components/common/buttons/PanelButtonList";
 import { PaginationTable } from "@/components/common/pagination/PaginationTable";
 import Table from "@/components/common/table/Table";
-import EventsListViewModel from "@/components/panel/pages/event/list/EventListViewModel";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";

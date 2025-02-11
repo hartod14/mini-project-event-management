@@ -13,8 +13,9 @@ export interface IEventInterface {
     address: string
     description?: string
     term_condition?: string
-    start_date: Date
-    end_date: Date
+    date: Date
+    start_time: Date
+    end_time: Date
     status: string
     image: string
     map_image?: string

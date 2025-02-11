@@ -33,13 +33,14 @@ export default function EventsListViewModel() {
 
         if (data) {
             data.map((row, index) => {
-                let startDate = formatDate(row.start_date)
-                let endDate = formatDate(row.end_date)
+                let date = formatDate(row.date)
+                let startTime = formatDate(row.start_time)
+                let endTime = formatDate(row.end_time)
                 body.push([
                     row.name,
                     row.event_category.name,
                     row.host_name,
-                    startDate == endDate ? `${startDate} ` : `${startDate} - ${endDate}`,
+                    `${date}, ${startTime} - ${endTime}`,
                     row.city.name,
                     row.status == 'ACTIVE' ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>,
                     <ButtonAction
@@ -97,6 +98,7 @@ export default function EventsListViewModel() {
     useEffect(() => {
         const handler = setTimeout(() => {
             setSearch(search);
+            setPage(1);
             getEventList();
         }, 300);
 
