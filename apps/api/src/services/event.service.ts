@@ -7,45 +7,45 @@ import { prisma } from '../config';
 import { pagination } from '../helpers/pagination';
 
 class eventService {
-  async create(req: Request) {
-    const {
-      name,
-      host_name,
-      address,
-      description,
-      term_condition,
-      date,
-      start_time,
-      end_time,
-      status,
-      image,
-      map_image,
-      event_category_id,
-      city_id,
-    } = req.body;
-    const data: Prisma.EventCreateInput = {
-      name,
-      host_name,
-      address,
-      description,
-      term_condition,
-      date: new Date(date),
-      start_time: new Date(start_time),
-      end_time: new Date(end_time),
-      status,
-      image,
-      map_image,
-      slug: slugGenerator(name),
-      event_category: {
-        connect: { id: event_category_id },
-      },
-      city: city_id ? { connect: { id: city_id } } : undefined,
-    };
+  // async create(req: Request) {
+  //   const {
+  //     name,
+  //     host_name,
+  //     address,
+  //     description,
+  //     term_condition,
+  //     date,
+  //     start_time,
+  //     end_time,
+  //     status,
+  //     image,
+  //     map_image,
+  //     event_category_id,
+  //     city_id,
+  //   } = req.body;
+  //   const data: Prisma.EventCreateInput = {
+  //     name,
+  //     host_name,
+  //     address,
+  //     description,
+  //     term_condition,
+  //     date: new Date(date),
+  //     start_time: new Date(start_time),
+  //     end_time: new Date(end_time),
+  //     status,
+  //     image,
+  //     map_image,
+  //     slug: slugGenerator(name),
+  //     event_category: {
+  //       connect: { id: event_category_id },
+  //     },
+  //     city: city_id ? { connect: { id: city_id } } : undefined,
+  //   };
 
-    await prisma.event.create({
-      data,
-    });
-  }
+  //   await prisma.event.create({
+  //     data,
+  //   });
+  // }
   async update(req: Request) {
     const id = Number(req.params.id);
     const { event_name, img_src, price } = req.body;

@@ -8,8 +8,8 @@ export const eventRouter = () => {
 
   router.get('/', eventController.getevents);
   router.get('/:slug', eventController.geteventBySlug);
-  router.post('/', eventController.createevent);
-  router.delete('/:id', eventController.deleteevent);
-  router.patch('/:id', eventController.updateevent);
+  // router.post('/', eventController.createevent);
+  // router.delete('/:id', eventController.deleteevent);
+  // router.patch('/:id', eventController.updateevent);
   return router;
 };
