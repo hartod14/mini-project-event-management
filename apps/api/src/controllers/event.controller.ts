@@ -1,5 +1,3 @@
-/** @format */
-
 import { NextFunction, Request, Response } from "express";
 import { ErrorHandler, responseHandler } from "../helpers/response.handler";
 import eventService from "../services/event.service";
@@ -49,14 +47,6 @@ class eventController {
       next(error);
     }
   }
-  // async getReviews(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const data = await eventService.getReviews(req);
-  //     responseHandler(res, "fetching reviews", data);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
 }
 
 export default new eventController();
