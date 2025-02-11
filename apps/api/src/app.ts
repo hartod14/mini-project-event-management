@@ -62,6 +62,7 @@ export default class App {
     this.app.use('/api/reviews', reviewRouter());
     this.app.use('/api/events', eventRouter());
     this.app.use('/api/auth', authRouter());
+    this.app.use('/api/booking', authRouter());
 
     //panel
     this.app.use('/api/panel/events', panelEventRouter());
