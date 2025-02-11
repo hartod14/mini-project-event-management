@@ -1,7 +1,7 @@
 // import { deleteEvents, getEvents } from "@/axios/repository/admin/events";
 import ButtonAction from "@/components/common/buttons/PanelButtonAction";
 import { LoadingContext } from "@/context/LoadingContext";
-import { formatDate } from "@/helpers/format.time";
+import { formatTimeOnly, formatDate } from "@/helpers/format.time";
 import { panelGetEvents } from "@/helpers/handlers/apis/event.api";
 import { IEventInterface } from "@/interfaces/event.interface";
 import { log } from "console";
@@ -34,13 +34,13 @@ export default function EventsListViewModel() {
         if (data) {
             data.map((row, index) => {
                 let date = formatDate(row.date)
-                let startTime = formatDate(row.start_time)
-                let endTime = formatDate(row.end_time)
+                let startTime = formatTimeOnly(row.start_time)
+                let endTime = formatTimeOnly(row.end_time)
                 body.push([
                     row.name,
                     row.event_category.name,
                     row.host_name,
-                    `${date}, ${startTime} - ${endTime}`,
+                    `${date} | ${startTime} - ${endTime}`,
                     row.city.name,
                     row.status == 'ACTIVE' ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>,
                     <ButtonAction
