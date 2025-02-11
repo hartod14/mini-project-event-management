@@ -14,8 +14,9 @@ class eventService {
       address,
       description,
       term_condition,
-      start_date,
-      end_date,
+      date,
+      start_time,
+      end_time,
       status,
       image,
       map_image,
@@ -28,8 +29,9 @@ class eventService {
       address,
       description,
       term_condition,
-      start_date: new Date(start_date),
-      end_date: new Date(end_date),
+      date: new Date(date),
+      start_time: new Date(start_time),
+      end_time: new Date(end_time),
       status,
       image,
       map_image,
@@ -86,7 +88,7 @@ class eventService {
         },
         isDeleted: null,
       },
-      
+
       ...pagination(Number(page), Number(limit)),
     });
   }

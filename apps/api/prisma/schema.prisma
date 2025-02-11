@@ -40,8 +40,9 @@ model Event {
   address           String      @db.Text
   description       String?     @db.Text
   term_condition    String?     @db.Text
-  start_date        DateTime    @db.Timestamp
-  end_date          DateTime    @db.Timestamp
+  date              DateTime    @db.Date
+  start_time        DateTime    @db.Time()
+  end_time          DateTime    @db.Time()
   status            EventStatus
   image             String      @db.Text
   map_image         String?     @db.Text
