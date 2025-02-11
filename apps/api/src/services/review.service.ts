@@ -1,17 +1,27 @@
-// bookingService.ts
+// async getReviews(req: Request) {
+//     const { page, limit } = req.query;
+//     return await prisma.event.findMany({
+//       where: {
+//         isDeleted: null,
+//       },
+//       ...pagination(Number(page), Number(limit)),
+//     });
+//   }
+/** 
+
+ * @format */
+
 import { Prisma } from '@prisma/client';
 import { Request } from 'express';
+import { slugGenerator } from '../helpers/slug.generator';
 import { prisma } from '../config';
 import { pagination } from '../helpers/pagination';
 import { create } from 'ts-node';
 
-class bookingService {
+class reviewService {
     async create(req: Request) {
-      const { event_id, user_id, payment_method_id, total_price, point_used, coupon_id } = req.body;
-      const data: Prisma.TransactionCreateInput = {
-        transaction_number: `TXN-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
-        total_price: parseFloat(total_price),
-        point_used: parseInt(point_used) || null,
+      const { event_id, user_id, description, rating_score } = req.body;
+      const data: Prisma.ReviewCreateInput = {
         event: {
           connect: {
             id: event_id,
@@ -22,27 +32,19 @@ class bookingService {
             id: user_id,
           },
         },
-        payment_method: {
-          connect: {
-            id: payment_method_id,
-          },
-        },
-        coupon_user: coupon_id ? {
-          connect: {
-            id: coupon_id,
-          },
-        } : undefined,
-        payment_status: 'WAITING_FOR_PAYMENT',
+        description,
+        rating_score,
       };
-      return await prisma.transaction.create({ data });
+      return await prisma.review.create({ data });
     }
-
     async getList(req: Request) {
       const { page, limit } = req.query;
-      return await prisma.transaction.findMany({
+      return await prisma.review.findMany({
         ...pagination(Number(page), Number(limit)),
       });
     }
-}
+  }
 
-export default new bookingService();
+
+
+export default new reviewService();
