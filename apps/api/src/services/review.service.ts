@@ -1,7 +1,19 @@
-/** @format */
+// async getReviews(req: Request) {
+//     const { page, limit } = req.query;
+//     return await prisma.event.findMany({
+//       where: {
+//         isDeleted: null,
+//       },
+//       ...pagination(Number(page), Number(limit)),
+//     });
+//   }
+/** 
+
+ * @format */
 
 import { Prisma } from '@prisma/client';
 import { Request } from 'express';
+import { slugGenerator } from '../helpers/slug.generator';
 import { prisma } from '../config';
 import { pagination } from '../helpers/pagination';
 import { create } from 'ts-node';
