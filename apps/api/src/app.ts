@@ -14,6 +14,8 @@ import { authRouter } from './routers/auth.router';
 import { panelEventRouter } from './routers/panel/event.router';
 import { eventRouter } from './routers/event.router';
 import { reviewRouter } from './routers/review.router';
+import { cityRouter } from './routers/city.router';
+import { categoryRouter } from './routers/category.router';
 
 export default class App {
   private app: Application;
@@ -59,10 +61,15 @@ export default class App {
       // res.send(`Hello, Purwadhika Student API!`);
       res.send(console.log(process.env.DATABASE_URL));
     });
+
     this.app.use('/api/reviews', reviewRouter());
     this.app.use('/api/events', eventRouter());
-    this.app.use('/api/auth', authRouter());
     this.app.use('/api/booking', authRouter());
+
+    //global
+    this.app.use('/api/auth', authRouter());
+    this.app.use('/api/cities', cityRouter());
+    this.app.use('/api/categories', categoryRouter());
 
     //panel
     this.app.use('/api/panel/events', panelEventRouter());

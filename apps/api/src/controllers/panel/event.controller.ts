@@ -9,7 +9,7 @@ class PanelEventController {
         try {
             const data = await panelEventService.getList(req);
             const total_data = await panelEventService.countTotal(req)
-            responsHandlerPagination(res, "event has been deleted", data, total_data);
+            responsHandlerPagination(res, "success get events data", data, total_data);
         } catch (error) {
             next(error);
         }

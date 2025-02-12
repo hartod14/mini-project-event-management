@@ -33,7 +33,7 @@ model User {
 model Event {
   id                Int         @id @default(autoincrement())
   event_category_id Int
-  city_id           Int?
+  city_id           Int
   slug              String      @unique
   name              String      @db.VarChar(100)
   host_name         String      @db.VarChar(100)
@@ -51,7 +51,7 @@ model Event {
   isDeleted         DateTime?
 
   event_category EventCategory  @relation(fields: [event_category_id], references: [id])
-  city           City?          @relation(fields: [city_id], references: [id])
+  city           City          @relation(fields: [city_id], references: [id])
   ticket_types   TicketType[]
   transactions   Transaction[]
   reviews        Review[]
