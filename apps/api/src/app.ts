@@ -16,6 +16,7 @@ import { eventRouter } from './routers/event.router';
 import { reviewRouter } from './routers/review.router';
 import { cityRouter } from './routers/city.router';
 import { categoryRouter } from './routers/category.router';
+import { uploadImageRouter } from './routers/uploadImage.router';
 
 export default class App {
   private app: Application;
@@ -70,9 +71,12 @@ export default class App {
     this.app.use('/api/auth', authRouter());
     this.app.use('/api/cities', cityRouter());
     this.app.use('/api/categories', categoryRouter());
+    this.app.use('/api/upload-image', uploadImageRouter())
 
     //panel
     this.app.use('/api/panel/events', panelEventRouter());
+
+    // this.app.use('/api/image', panelEventRouter());
   }
 
   public start(): void {

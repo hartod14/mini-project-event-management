@@ -17,3 +17,5 @@ export const DATABASE_URL = process.env.DATABASE_URL || '';
 export const prisma = new PrismaClient();
 
 export const jwt_secret = process.env.SECRET || "";
+
+export const cloudinary_config = process.env.CLOUDINARY_URL || ""

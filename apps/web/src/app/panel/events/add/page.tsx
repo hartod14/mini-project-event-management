@@ -5,9 +5,9 @@ import React from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { InputField } from "@/components/common/inputs/InputField";
 import { InputFieldTextarea } from "@/components/common/inputs/InputFieldTextarea";
-import EventAddViewModel from "@/components/Panel/pages/event/add/EventAddViewModel";
 import { InputSelect } from "@/components/common/inputs/InputSelect";
 import RichTextEditor from "@/components/common/inputs/RichTextEditor";
+import EventAddViewModel from "@/components/panel/pages/event/add/EventAddViewModel";
 
 // import EventsAddView from "@/components/pages/landing-page/events/add/EventsAddView";
 
@@ -18,15 +18,17 @@ export default function PanelAddEvent() {
     <div className="">
       <form className="w-full" onSubmit={formik.handleSubmit}>
         <div className="grid gap-6 mb-6 md:grid-cols-2">
-          <InputField type="text" id="name" name="name" label="Name" formik={formik} />
-          <InputField type="text" id="host_name" name="host_name" label="Host Name" formik={formik} />
-          <InputField type="date" id="date" name="date" label="Date" formik={formik} />
-          <InputField type="time" id="start_time" name="start_time" label="Start Time" formik={formik} />
-          <InputField type="time" id="end_time" name="end_time" label="End Time" formik={formik} />
-          <InputFieldTextarea id="address" name="address" label="Address" formik={formik} />
-          <InputSelect id="city_id" name="city_id" label="Select City" options={cities} formik={formik} />
-          <InputSelect id="event_category_id" name="event_category_id" label="Select Category" options={categories} formik={formik} />
-          <RichTextEditor id="description" name="description" formik={formik} />
+          <InputField type="text" id="name" name="name" label="Name" formik={formik} required />
+          <InputField type="text" id="host_name" name="host_name" label="Host Name" formik={formik} required />
+          <InputField type="date" id="date" name="date" label="Date" formik={formik} required />
+          <InputField type="time" id="start_time" name="start_time" label="Start Time" formik={formik} required />
+          <InputField type="time" id="end_time" name="end_time" label="End Time" formik={formik} required />
+          <InputFieldTextarea id="address" name="address" label="Address" formik={formik} required />
+          <InputSelect id="city_id" name="city_id" label="Select City" options={cities} formik={formik} required />
+          <InputSelect id="event_category_id" name="event_category_id" label="Select Category" options={categories} formik={formik} required />
+          {/* <RichTextEditor id="description" name="description" formik={formik} /> */}
+          <InputFieldTextarea id="description" name="description" label="Description" formik={formik} />
+          <InputFieldTextarea id="term_confition" name="term_confition" label="Term & Condition" formik={formik} />
         </div>
 
         <p className="mb-4 text-red-400">{errMessage}</p>

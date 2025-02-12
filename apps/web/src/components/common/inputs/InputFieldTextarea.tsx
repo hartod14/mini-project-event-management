@@ -6,14 +6,15 @@ interface InputFieldProps {
     name: string;
     label: string;
     formik: FormikProps<any>;
+    required?: boolean
 }
 
-export const InputFieldTextarea = ({ id, name, label, formik }: InputFieldProps) => {
+export const InputFieldTextarea = ({ id, name, label, formik, required = false }: InputFieldProps) => {
     const errorMessage = formik.touched[name] && formik.errors[name];
     return (
         <div>
             <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                {label}
+                {label} {!required && <span className="text-gray-500">(optional)</span> }
             </label>
             <textarea
                 id={id}
@@ -21,7 +22,7 @@ export const InputFieldTextarea = ({ id, name, label, formik }: InputFieldProps)
                 value={formik.values[name]}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                required
+                required={required}
                 rows={4}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             ></textarea>
