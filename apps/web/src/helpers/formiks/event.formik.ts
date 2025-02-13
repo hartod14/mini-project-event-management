@@ -6,9 +6,9 @@ export const storeEventInit = {
     address: "",
     description: "",
     term_condition: "",
-    start_date: "",
-    end_date: "",
-    status: "",
+    date: "",
+    start_time: "",
+    end_time: "",
+    status: "ACTIVE",
     image: "",
-    map_image: "",
 }

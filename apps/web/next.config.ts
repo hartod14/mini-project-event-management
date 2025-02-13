@@ -3,21 +3,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
-      // {
-      //   hostname: "www.kickavenue.com",
-      //   protocol: "https",
-      //   pathname: "/static/media/**",
-      // },
       {
-        hostname: "d5ibtax54de3q.cloudfront.net",
         protocol: "https",
+        hostname: "d5ibtax54de3q.cloudfront.net",
       },
       {
-        hostname: "res.cloudinary.com",
         protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

@@ -8,12 +8,12 @@ export const storeEventValidator = Yup.object({
     address: Yup.string(),
     description: Yup.string().nullable(),
     term_condition: Yup.string().nullable(),
-    start_date: Yup.date().required(),
-    end_date: Yup.date().required().test("end_date", "Start date cannot be after end date", function (value) {
-        const { start_date } = this.parent;
-        return !start_date || value >= start_date;
+    date: Yup.date().required(),
+    end_time: Yup.string().required().test("end_time", "Start time cannot be after end time", function (value) {
+        const { start_time } = this.parent;
+        return !start_time || value >= start_time;
     }),
-    status: Yup.string().required(),
+    start_time: Yup.string().required(),
+    status: Yup.mixed().oneOf(['ACTIVE', 'INACTIVE']).required(),
     image: Yup.string().required(),
-    map_image: Yup.string().nullable(),
 })

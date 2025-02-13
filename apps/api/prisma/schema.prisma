@@ -45,7 +45,6 @@ model Event {
   end_time          DateTime    @db.Time()
   status            EventStatus
   image             String      @db.Text
-  map_image         String?     @db.Text
   created_at        DateTime    @default(now())
   updated_at        DateTime?   @updatedAt
   isDeleted         DateTime?

@@ -1,7 +1,7 @@
 import { FormikProps } from "formik";
 import React from "react";
 
-interface InputFieldProps {
+interface Props {
     id: string;
     type: string;
     name: string;
@@ -10,12 +10,12 @@ interface InputFieldProps {
     formik: FormikProps<any>;
 }
 
-export const InputField = ({ id, type, name, label, formik, required = false }: InputFieldProps) => {
+export const InputField = ({ id, type, name, label, formik, required = false }: Props) => {
     const errorMessage = formik.touched[name] && formik.errors[name];
     return (
         <div>
             <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            {label} {!required && <span className="text-gray-500">(optional)</span> }
+                {label} {!required && <span className="text-gray-500">(optional)</span>}
             </label>
             <input
                 type={type}

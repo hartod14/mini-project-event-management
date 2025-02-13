@@ -101,22 +101,6 @@ class PanelEventService {
             },
         });
     }
-
-    async uploadImage(req: Request) {
-        // const id = Number(req.user?.id);
-        const { file } = req;
-        if (!file) throw new Error("No File Uploaded");
-        const { secure_url } = await cloudinaryUpload(file);
-        return secure_url
-        // await prisma.user.update({
-        //     data: {
-        //         img_src: secure_url,
-        //     },
-        //     where: {
-        //         id,
-        //     },
-        // });
-    }
 }
 
 export default new PanelEventService();

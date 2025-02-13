@@ -1,7 +1,7 @@
 import { FormikProps } from "formik";
 import React from "react";
 
-interface InputFieldProps {
+interface Props {
     id: string;
     name: string;
     label: string;
@@ -9,7 +9,7 @@ interface InputFieldProps {
     required?: boolean
 }
 
-export const InputFieldTextarea = ({ id, name, label, formik, required = false }: InputFieldProps) => {
+export const InputFieldTextarea = ({ id, name, label, formik, required = false }: Props) => {
     const errorMessage = formik.touched[name] && formik.errors[name];
     return (
         <div>

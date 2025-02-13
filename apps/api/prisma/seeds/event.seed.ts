@@ -15,7 +15,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
     image: 'https://example.com/images/tech-conference.jpg',
-    map_image: 'https://example.com/images/map-tech-conference.jpg',
   },
   {
     event_category_id: 2,
@@ -31,7 +30,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
     image: 'https://example.com/images/music-festival.jpg',
-    map_image: 'https://example.com/images/map-music-festival.jpg',
   },
   {
     event_category_id: 3,
@@ -47,7 +45,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
     image: 'https://example.com/images/startup-pitch.jpg',
-    map_image: 'https://example.com/images/map-startup-pitch.jpg',
   },
   {
     event_category_id: 4,
@@ -63,7 +60,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
     image: 'https://example.com/images/food-expo.jpg',
-    map_image: 'https://example.com/images/map-food-expo.jpg',
   },
   {
     event_category_id: 5,
@@ -79,7 +75,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
     image: 'https://example.com/images/film-festival.jpg',
-    map_image: 'https://example.com/images/map-film-festival.jpg',
   },
   {
     event_category_id: 1,
@@ -95,7 +90,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/tech-conference.jpg",
-    map_image: "https://example.com/images/map-tech-conference.jpg"
   },
   {
     event_category_id: 2,
@@ -111,7 +105,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/art-fair.jpg",
-    map_image: "https://example.com/images/map-art-fair.jpg"
   },
   {
     event_category_id: 3,
@@ -127,7 +120,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/music-festival.jpg",
-    map_image: "https://example.com/images/map-music-festival.jpg"
   },
   {
     event_category_id: 5,
@@ -143,7 +135,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/sports-tournament.jpg",
-    map_image: "https://example.com/images/map-sports-tournament.jpg"
   },
   {
     event_category_id: 4,
@@ -159,7 +150,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/wine-tasting.jpg",
-    map_image: "https://example.com/images/map-wine-tasting.jpg"
   },
   {
     event_category_id: 3,
@@ -175,7 +165,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/rock-concert.jpg",
-    map_image: "https://example.com/images/map-rock-concert.jpg"
   },
   {
     event_category_id: 2,
@@ -191,7 +180,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/film-festival.jpg",
-    map_image: "https://example.com/images/map-film-festival.jpg"
   },
   {
     event_category_id: 5,
@@ -207,7 +195,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/chicago-marathon.jpg",
-    map_image: "https://example.com/images/map-chicago-marathon.jpg"
   },
   {
     event_category_id: 1,
@@ -223,7 +210,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/gaming-expo.jpg",
-    map_image: "https://example.com/images/map-gaming-expo.jpg"
   },
   {
     event_category_id: 4,
@@ -239,6 +225,5 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
     image: "https://example.com/images/chocolate-festival.jpg",
-    map_image: "https://example.com/images/map-chocolate-festival.jpg"
   }
 ];

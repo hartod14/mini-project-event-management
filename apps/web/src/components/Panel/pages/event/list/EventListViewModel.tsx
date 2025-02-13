@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
 export default function EventsListViewModel() {
+    const loading = useContext(LoadingContext);
     const [page, setPage] = useState<number>(1)
     const [search, setSearch] = useState<string>('')
     const [limit, setLimit] = useState<number>(15)
@@ -19,9 +20,8 @@ export default function EventsListViewModel() {
         body: [],
     });
     const router = useRouter();
-    const loading = useContext(LoadingContext);
 
-    async function getEventList() {
+    async function getEventList() {        
         loading?.setLoading(true);
 
         const body: any = [];
