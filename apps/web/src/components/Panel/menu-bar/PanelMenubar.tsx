@@ -59,7 +59,7 @@ export default function PanelMenubar({ children }: Props) {
           <span className="sr-only">Loading...</span>
         </div>
       ) : null}
-      
+
       <div>
         {/* Sidebar */}
         <div

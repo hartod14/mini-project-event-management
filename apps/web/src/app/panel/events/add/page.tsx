@@ -7,15 +7,13 @@ import { InputField } from "@/components/common/inputs/InputField";
 import { InputFieldTextarea } from "@/components/common/inputs/InputFieldTextarea";
 import { InputSelect } from "@/components/common/inputs/InputSelect";
 import RichTextEditor from "@/components/common/inputs/RichTextEditor";
-import EventAddViewModel from "@/components/Panel/pages/event/add/EventAddViewModel";
 import Image from "next/image";
 import { uploadImage } from "@/helpers/handlers/upload";
 import DefaultImage from "@/../public/default_image.jpg"
 import Spinner from "@/../public/spinner.gif"
 import { ArrowUpTrayIcon, SignalIcon } from "@heroicons/react/24/outline";
 import { SwitchField } from "@/components/common/inputs/SwitchField";
-
-// import EventsAddView from "@/components/pages/landing-page/events/add/EventsAddView";
+import EventAddViewModel from "@/components/panel/pages/event/add/EventAddViewModel";
 
 export default function PanelAddEvent() {
   const { errMessage, open, setOpen, formik, cities, categories, upload, refImage, isLoading, image } = EventAddViewModel();
@@ -34,8 +32,8 @@ export default function PanelAddEvent() {
           <InputSelect id="event_category_id" name="event_category_id" label="Select Category" options={categories} formik={formik} required />
           {/* <RichTextEditor id="description" name="description" formik={formik} /> */}
           <InputFieldTextarea id="description" name="description" label="Description" formik={formik} />
-          <InputFieldTextarea id="term_confition" name="term_confition" label="Term & Condition" formik={formik} />
-          <SwitchField id="status" name="status" label="Status" formik={formik} required />
+          <InputFieldTextarea id="term_condition" name="term_condition" label="Term & Condition" formik={formik} />
+          <SwitchField id="status" name="status" label="Status" formik={formik} />
         </div>
         <div>
           <div className=" my-10">
@@ -80,17 +78,7 @@ export default function PanelAddEvent() {
           {formik.isSubmitting ? "Processing..." : "Register"}
         </button>
       </form>
-      <Snackbar
-        open={open}
-        autoHideDuration={1500}
-        onClose={() => setOpen(false)}
-        message="Login Success"
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
-          Create Event Success
-        </Alert>
-      </Snackbar>
+      
     </div>
   );
 }

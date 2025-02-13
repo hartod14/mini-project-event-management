@@ -8,6 +8,9 @@ import { ICategoryInterface } from "@/interfaces/category.interface";
 import { getCategories } from "@/helpers/handlers/apis/category.api";
 import { uploadImage } from "@/helpers/handlers/upload";
 import { LoadingContext } from "@/context/LoadingContext";
+import Swal from "sweetalert2";
+import { createEvent } from "@/helpers/handlers/apis/event.api";
+import { useRouter } from "next/navigation";
 
 export default function EventAddViewModel() {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,25 +21,53 @@ export default function EventAddViewModel() {
     const [image, setImage] = useState<string>("")
     const refImage = useRef<HTMLInputElement>(null);
     const loading = useContext(LoadingContext);
+    const router = useRouter()
 
     const formik = useFormik({
         validationSchema: storeEventValidator,
         initialValues: storeEventInit,
         onSubmit: async (values) => {
-            try {
-                loading?.setLoading(true)
-                setErrMessage("");
+            Swal.fire({
+                title: "Save this new event?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, save it!",
+                cancelButtonText: "Cancel"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        loading?.setLoading(true);
+                        setErrMessage("");
 
-                // await register(values);
-                setOpen(true);
-                formik.resetForm();
-            } catch (error) {
-                if (error instanceof Error) setErrMessage(error.message);
-            }
-            
-            loading?.setLoading(false)
+                        const res = await createEvent(values);
+                        if (res?.error) {
+                            setErrMessage(res.error);
+                        } else {
+                            formik.resetForm();
+                        }
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            setErrMessage(error.message);
+                        }
+                    } finally {
+                        Swal.fire({
+                            title: "Saved!",
+                            text: "Your new event has been created.",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6",
+                        }).then(() => {
+                            router.push("/panel/events");
+                        });
+                        
+                        loading?.setLoading(false);
+                    }
+                }
+            });
         },
     });
+
 
 
     const upload = useCallback(
@@ -44,10 +75,10 @@ export default function EventAddViewModel() {
             setIsLoading(true);
             if (e.target.files?.length) {
                 const image: File = e.target.files[0];
-                formik.setFieldValue("image", image);
                 const form = new FormData();
                 form.append("image", image);
                 const resImage = await uploadImage(form);
+                formik.setFieldValue("image", resImage.data);
                 setImage(resImage.data)
             }
             setIsLoading(false);

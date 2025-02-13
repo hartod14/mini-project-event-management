@@ -8,9 +8,9 @@ export const panelEventRouter = () => {
     const router = Router();
 
     router.get("/", panelEventController.getEvents);
+    router.post("/", panelEventController.createEvent);
     // router.post("/image", uploader().single("image"), panelEventController.addImageCloudinary);
     // router.get("/:slug", panelEventController.getProductBySlug);
-    // router.post("/", panelEventController.createProduct);
     // router.delete("/:id", panelEventController.deleteevent);
     // router.patch("/:id", panelEventController.updateProduct);
 

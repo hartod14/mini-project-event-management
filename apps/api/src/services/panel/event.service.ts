@@ -6,6 +6,7 @@ import { Request } from "express";
 import { prisma } from "../../config";
 import { pagination } from "../../helpers/pagination";
 import { cloudinaryUpload } from "@/helpers/cloudinary";
+import { slugGenerator } from "@/helpers/slug.generator";
 
 class PanelEventService {
     // async create(req: Request) {
@@ -59,6 +60,7 @@ class PanelEventService {
     //         },
     //     });
     // }
+
     async getList(req: Request) {
         const { page, limit, search } = req.query;
         return await prisma.event.findMany({
@@ -72,6 +74,9 @@ class PanelEventService {
             include: {
                 city: true,
                 event_category: true
+            },
+            orderBy: {
+                created_at: 'desc',
             },
 
             ...pagination(Number(page), Number(limit)),
@@ -90,16 +95,47 @@ class PanelEventService {
         })
     }
 
-    async delete(req: Request) {
-        const id = Number(req.params.id);
-        await prisma.event.update({
-            data: {
-                isDeleted: new Date(),
+    async create(req: Request) {
+        const {
+            name,
+            host_name,
+            address,
+            description,
+            term_condition,
+            date,
+            start_time,
+            end_time,
+            status,
+            image,
+            event_category_id,
+            city_id,
+        } = req.body;
+
+        const data: Prisma.EventCreateInput = {
+            name,
+            host_name,
+            address,
+            description,
+            term_condition,
+            date: new Date(date),
+            start_time: new Date('1970-01-01T' + start_time),
+            end_time: new Date('1970-01-01T' + end_time),
+            status,
+            image,
+            slug: slugGenerator(name),
+            event_category: {
+                connect: { id: Number(event_category_id) },
             },
-            where: {
-                id,
+            city: {
+                connect: { id: Number(city_id) },
             },
+        };
+
+        await prisma.event.create({
+            data,
         });
+
+        return data
     }
 }
 

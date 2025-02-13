@@ -5,7 +5,7 @@ export const storeEventValidator = Yup.object({
     city_id: Yup.string().required(),
     name: Yup.string().max(100).required(),
     host_name: Yup.string().max(100).required(),
-    address: Yup.string(),
+    address: Yup.string().required(),
     description: Yup.string().nullable(),
     term_condition: Yup.string().nullable(),
     date: Yup.date().required(),

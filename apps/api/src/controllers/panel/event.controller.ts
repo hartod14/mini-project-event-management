@@ -3,6 +3,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorHandler, responseHandler, responsHandlerPagination } from "../../helpers/response.handler";
 import panelEventService from "../../services/panel/event.service";
+import eventService from "../../services/panel/event.service";
 
 class PanelEventController {
     async getEvents(req: Request, res: Response, next: NextFunction) {
@@ -15,14 +16,25 @@ class PanelEventController {
         }
     }
 
-    async deleteevent(req: Request, res: Response, next: NextFunction) {
+    async createEvent(req: Request, res: Response, next: NextFunction) {
         try {
-            await panelEventService.delete(req);
-            responseHandler(res, "event has been deleted");
+            console.log(req.body);
+
+            const data = await eventService.create(req);
+            responseHandler(res, "new event has been created", data, 201);
         } catch (error) {
             next(error);
         }
     }
+
+    // async deleteevent(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         await panelEventService.delete(req);
+    //         responseHandler(res, "event has been deleted");
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 }
 
 export default new PanelEventController();

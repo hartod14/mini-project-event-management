@@ -21,15 +21,14 @@ export default function EventsListViewModel() {
     });
     const router = useRouter();
 
-    async function getEventList() {        
-        loading?.setLoading(true);
+    async function getEventList() {
+        // loading?.setLoading(true);
 
         const body: any = [];
 
         const res = (await panelGetEvents(search, page, limit));
         const data: IEventInterface[] = res.data
         const total_data: number = res.total_data
-        // const totalData: number = (await panelGetEvents('', page, limit)).data;
 
         if (data) {
             data.map((row, index) => {
@@ -64,7 +63,7 @@ export default function EventsListViewModel() {
                 ...table,
                 body: body,
             });
-            loading?.setLoading(false);
+            // loading?.setLoading(false);
         }
     }
     // async function deleteEventList(id: number) {
@@ -79,36 +78,19 @@ export default function EventsListViewModel() {
     //     }
     // }
 
-
     useEffect(() => {
-        // console.log(total);
         getEventList();
-        // console.log(total);
-
-    }, [page]);
-
-    useEffect(() => {
-        // console.log(total);
-        setPage(1);
-        getEventList();
-        // console.log(total);
-
-    }, [limit]);
+    }, [page, limit, search]);
 
     useEffect(() => {
         const handler = setTimeout(() => {
-            setSearch(search);
             setPage(1);
-            getEventList();
-        }, 300);
+        }, 500);
 
         return () => clearTimeout(handler);
     }, [search]);
 
-    // useEffect(() => {
-    //     getEventList();
-    //     // console.log("Updated total:", totalPage);
-    // }, [totalPage]);
+
 
     return {
         setPage,
