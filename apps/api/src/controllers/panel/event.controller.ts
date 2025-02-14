@@ -20,8 +20,8 @@ class PanelEventController {
         try {
             console.log(req.body);
 
-            const data = await eventService.create(req);
-            responseHandler(res, "new event has been created", data, 201);
+            // const data = await eventService.create(req);
+            // responseHandler(res, "new event has been created", data, 201);
         } catch (error) {
             next(error);
         }

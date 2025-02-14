@@ -12,10 +12,31 @@ import Swal from "sweetalert2";
 import { createEvent } from "@/helpers/handlers/apis/event.api";
 import { useRouter } from "next/navigation";
 
+export type Ticket = {
+    name: string;
+    price: string;
+    quota: string;
+};
+
+type FormValues = {
+    event_category_id: string;
+    city_id: string;
+    name: string;
+    host_name: string;
+    address: string;
+    description: string;
+    term_condition: string;
+    date: string;
+    start_time: string;
+    end_time: string;
+    status: string;
+    image: string;
+    tickets: Ticket[];
+};
+
 export default function EventAddViewModel() {
     const [isLoading, setIsLoading] = useState(false);
     const [errMessage, setErrMessage] = useState("");
-    const [open, setOpen] = useState(false);
     const [cities, setCities] = useState<ICityInterface[]>([])
     const [categories, setCategories] = useState<ICategoryInterface[]>([])
     const [image, setImage] = useState<string>("")
@@ -25,6 +46,7 @@ export default function EventAddViewModel() {
 
     const formik = useFormik({
         validationSchema: storeEventValidator,
+        validateOnChange: true,
         initialValues: storeEventInit,
         onSubmit: async (values) => {
             Swal.fire({
@@ -60,7 +82,7 @@ export default function EventAddViewModel() {
                         }).then(() => {
                             router.push("/panel/events");
                         });
-                        
+
                         loading?.setLoading(false);
                     }
                 }
@@ -105,10 +127,6 @@ export default function EventAddViewModel() {
     }, [])
 
     return {
-        open,
-        setOpen,
-        errMessage,
-        formik,
         cities,
         categories,
         upload,
