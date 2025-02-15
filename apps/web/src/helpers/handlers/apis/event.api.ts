@@ -7,6 +7,17 @@ export const panelGetEvents = async (eventName: string, page: number, limit: num
     return data;
 };
 
+export const panelGetEventDetail = async (id: number) => {
+    const res = await fetch(api_url + `panel/events/${id}`);
+
+    const data = await res.json()
+
+    console.log(data);
+
+
+    return data;
+}
+
 export const createEvent = async (newEvent: ICreateEventInterface) => {
     try {
         const res = await fetch(api_url + `panel/events`, {
@@ -23,7 +34,7 @@ export const createEvent = async (newEvent: ICreateEventInterface) => {
             return { error: data.message || "Something went wrong" };
         }
 
-        return data; 
+        return data;
     } catch (err) {
         return { error: err instanceof Error ? err.message : "Network error" };
     }

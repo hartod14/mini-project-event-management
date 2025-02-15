@@ -1,42 +1,14 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useFormik } from "formik"
-import { storeEventValidator } from "@/validators/event.validator";
-import { storeEventInit } from "@/helpers/formiks/event.formik";
 import { getCities } from "@/helpers/handlers/apis/city.api";
 import { ICityInterface } from "@/interfaces/city.interface";
 import { ICategoryInterface } from "@/interfaces/category.interface";
 import { getCategories } from "@/helpers/handlers/apis/category.api";
 import { uploadImage } from "@/helpers/handlers/upload";
 import { LoadingContext } from "@/context/LoadingContext";
-import Swal from "sweetalert2";
-import { createEvent } from "@/helpers/handlers/apis/event.api";
 import { useRouter } from "next/navigation";
-
-export type Ticket = {
-    name: string;
-    price: string;
-    quota: string;
-};
-
-type FormValues = {
-    event_category_id: string;
-    city_id: string;
-    name: string;
-    host_name: string;
-    address: string;
-    description: string;
-    term_condition: string;
-    date: string;
-    start_time: string;
-    end_time: string;
-    status: string;
-    image: string;
-    tickets: Ticket[];
-};
 
 export default function EventAddViewModel() {
     const [isLoading, setIsLoading] = useState(false);
-    // const [errMessage, setErrMessage] = useState("");
     const [cities, setCities] = useState<ICityInterface[]>([])
     const [categories, setCategories] = useState<ICategoryInterface[]>([])
     const [image, setImage] = useState<string>("")
@@ -88,7 +60,9 @@ export default function EventAddViewModel() {
         categories,
         upload,
         refImage,
+        loading,
         isLoading,
-        image
+        image,
+        router
     }
 }

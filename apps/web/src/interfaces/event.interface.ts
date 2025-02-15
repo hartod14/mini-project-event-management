@@ -8,6 +8,13 @@ export interface IEventInterface {
     city: {
         name: string
     }
+    tickets: {
+        id: number,
+        name: string,
+        price?: number,
+        quota?: number,
+        purchaseable_limit_time: number,
+    }[]
     name: string
     host_name: string
     address: string
@@ -18,7 +25,6 @@ export interface IEventInterface {
     end_time: Date
     status: string
     image: string
-    map_image?: string
     created_at: Date
     updated_at?: Date
 }

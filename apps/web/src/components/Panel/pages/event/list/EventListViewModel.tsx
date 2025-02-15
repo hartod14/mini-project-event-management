@@ -48,10 +48,10 @@ export default function EventsListViewModel() {
                         //     await deleteEventList(row.id);
                         // }}
                         onShow={() => {
-                            router.push(`/panel/events/detail?id=${row.id}`);
+                            router.push(`/panel/events/detail/${row.id}`);
                         }}
                         onUpdate={() => {
-                            router.push(`/panel/events/edit?id=${row.id}`);
+                            router.push(`/panel/events/edit/${row.id}`);
                         }}
                     />,
                 ]);

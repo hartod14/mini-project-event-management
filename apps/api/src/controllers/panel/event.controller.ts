@@ -25,6 +25,16 @@ class PanelEventController {
         }
     }
 
+    async getEventById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await eventService.getById(req);
+            if (!data) throw new ErrorHandler("event not found", 404);
+            responseHandler(res, "success fetching event with id", data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     // async deleteevent(req: Request, res: Response, next: NextFunction) {
     //     try {
     //         await panelEventService.delete(req);

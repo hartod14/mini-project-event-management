@@ -83,6 +83,21 @@ class PanelEventService {
         });
     }
 
+    async getById(req: Request) {
+        const id = Number(req.params.id)
+        return await prisma.event.findUnique({
+            where: {
+                id,
+                isDeleted: null,
+            },
+            include: {
+                city: true,
+                event_category: true,
+                ticket_types: true
+            }
+        });
+    }
+
     async countTotal(req: Request) {
         const { search } = req.query
         return await prisma.event.count({

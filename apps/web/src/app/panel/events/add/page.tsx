@@ -1,34 +1,21 @@
-"use client";
-
-// import EventsAddViewModel from "@/components/Panel/pages/event/add/EventsAddViewModel";
-import React, { useCallback, useContext, useRef, useState } from "react";
-import { Alert, Snackbar } from "@mui/material";
+import React from "react";
 import { InputFieldTextarea } from "@/components/common/inputs/InputFieldTextarea";
 import { InputSelect } from "@/components/common/inputs/InputSelect";
-import RichTextEditor from "@/components/common/inputs/RichTextEditor";
 import Image from "next/image";
-import { uploadImage } from "@/helpers/handlers/upload";
 import DefaultImage from "@/../public/default_image.jpg"
-import Spinner from "@/../public/spinner.gif"
 import { ArrowUpTrayIcon, SignalIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { SwitchField } from "@/components/common/inputs/SwitchField";
 import { FieldArray, Formik, Form, Field, ErrorMessage } from "formik";
 import { storeEventValidator } from "@/validators/event.validator";
 import { storeEventInit } from "@/helpers/formiks/event.formik";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
-import { LoadingContext } from "@/context/LoadingContext";
 import { createEvent } from "@/helpers/handlers/apis/event.api";
 import { InputField } from "@/components/common/inputs/InputField";
 import EventAddViewModel from "@/components/panel/pages/event/add/EventAddViewModel";
 
 
 export default function PanelAddEvent() {
-  const { cities, categories, upload, refImage, isLoading, image } = EventAddViewModel();
-
-  // const [errMessage, setErrMessage] = useState("");
-  const loading = useContext(LoadingContext);
-  const router = useRouter()
+  const { cities, categories, upload, refImage, loading, isLoading, image, router } = EventAddViewModel();
 
   return (
     <div className="">
@@ -144,7 +131,7 @@ export default function PanelAddEvent() {
                           name: "",
                           price: "",
                           quota: "",
-                        }) // Add new empty ticket
+                        }) 
                       }
                       className="bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700"
                     >
@@ -162,7 +149,7 @@ export default function PanelAddEvent() {
                       <button
                         type="button"
                         className="text-red-500 hover:text-red-700 transition duration-200"
-                        onClick={() => arrayHelpers.remove(index)} // Remove ticket
+                        onClick={() => arrayHelpers.remove(index)} 
                       >
                         <XCircleIcon className="w-6 h-6" />
                       </button>
