@@ -36,7 +36,7 @@ type FormValues = {
 
 export default function EventAddViewModel() {
     const [isLoading, setIsLoading] = useState(false);
-    const [errMessage, setErrMessage] = useState("");
+    // const [errMessage, setErrMessage] = useState("");
     const [cities, setCities] = useState<ICityInterface[]>([])
     const [categories, setCategories] = useState<ICategoryInterface[]>([])
     const [image, setImage] = useState<string>("")
@@ -44,64 +44,21 @@ export default function EventAddViewModel() {
     const loading = useContext(LoadingContext);
     const router = useRouter()
 
-    const formik = useFormik({
-        validationSchema: storeEventValidator,
-        validateOnChange: true,
-        initialValues: storeEventInit,
-        onSubmit: async (values) => {
-            Swal.fire({
-                title: "Save this new event?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, save it!",
-                cancelButtonText: "Cancel"
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        loading?.setLoading(true);
-                        setErrMessage("");
-
-                        const res = await createEvent(values);
-                        if (res?.error) {
-                            setErrMessage(res.error);
-                        } else {
-                            formik.resetForm();
-                        }
-                    } catch (error) {
-                        if (error instanceof Error) {
-                            setErrMessage(error.message);
-                        }
-                    } finally {
-                        Swal.fire({
-                            title: "Saved!",
-                            text: "Your new event has been created.",
-                            icon: "success",
-                            confirmButtonColor: "#3085d6",
-                        }).then(() => {
-                            router.push("/panel/events");
-                        });
-
-                        loading?.setLoading(false);
-                    }
-                }
-            });
-        },
-    });
-
-
-
     const upload = useCallback(
-        async (e: React.ChangeEvent<HTMLInputElement>) => {
+        async (
+            e: React.ChangeEvent<HTMLInputElement>,
+            setFieldValue: (field: string, value: any) => void
+        ) => {
             setIsLoading(true);
             if (e.target.files?.length) {
                 const image: File = e.target.files[0];
                 const form = new FormData();
                 form.append("image", image);
+
                 const resImage = await uploadImage(form);
-                formik.setFieldValue("image", resImage.data);
-                setImage(resImage.data)
+
+                setFieldValue("image", resImage.data);
+                setImage(resImage.data);
             }
             setIsLoading(false);
         },

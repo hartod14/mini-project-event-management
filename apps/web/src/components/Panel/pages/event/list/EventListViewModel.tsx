@@ -80,12 +80,13 @@ export default function EventsListViewModel() {
 
     useEffect(() => {
         getEventList();
-    }, [page, limit, search]);
+    }, [page, limit]);
 
     useEffect(() => {
         const handler = setTimeout(() => {
             setPage(1);
-        }, 500);
+            getEventList();
+        }, 300);
 
         return () => clearTimeout(handler);
     }, [search]);

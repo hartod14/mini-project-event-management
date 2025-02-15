@@ -8,14 +8,23 @@ export const panelGetEvents = async (eventName: string, page: number, limit: num
 };
 
 export const createEvent = async (newEvent: ICreateEventInterface) => {
-    const res = await fetch(api_url + `panel/events`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newEvent)
-    }).then(() => 'New event has been createde').catch((err) => (err instanceof Error ? { error: err.message } : err));
+    try {
+        const res = await fetch(api_url + `panel/events`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newEvent)
+        });
 
+        const data = await res.json();
 
-    return res
-}
+        if (!res.ok) {
+            return { error: data.message || "Something went wrong" };
+        }
+
+        return data; 
+    } catch (err) {
+        return { error: err instanceof Error ? err.message : "Network error" };
+    }
+};

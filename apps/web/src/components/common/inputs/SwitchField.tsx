@@ -6,10 +6,9 @@ interface Props {
     name: string;
     label: string;
     formik: FormikProps<any>;
-    required?: boolean;
 }
 
-export const SwitchField = ({ id, name, label, formik, required = false }: Props) => {
+export const SwitchField = ({ id, name, label, formik, }: Props) => {
     const errorMessage = formik.touched[name] && formik.errors[name];
 
     return (
@@ -18,7 +17,7 @@ export const SwitchField = ({ id, name, label, formik, required = false }: Props
                 htmlFor={id}
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-                {label} {!required && <span className="text-gray-500">(optional)</span>}
+                {label}
             </label>
             <label className="inline-flex items-center cursor-pointer">
                 <input

@@ -4,23 +4,18 @@ export const storeEventInit = {
     date: "",
     start_time: "",
     end_time: "",
+    address: "",
     event_category_id: "",
     city_id: "",
-    address: "",
     description: "",
     term_condition: "",
     status: "ACTIVE",
-    // image: "",
-    tickets: [
+    image: "",
+    ticket_types: [
         {
-            name: "test",
-            price: "10000",
-            quota: "5000"
+            name: "",
+            price: "",
+            quota: ""
         },
-        {
-            name: "test2",
-            price: "20000",
-            quota: "7000"
-        }
     ]
 }

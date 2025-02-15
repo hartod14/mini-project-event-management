@@ -21,6 +21,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "cross-env": "^7.0.3",
     "formik": "^2.4.6",
+    "formik-antd": "^3.0.0-beta.9",
     "install": "^0.13.0",
     "next": "15.1.0",
     "npm": "^11.1.0",
