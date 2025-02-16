@@ -17,6 +17,8 @@ import { reviewRouter } from './routers/review.router';
 import { cityRouter } from './routers/city.router';
 import { categoryRouter } from './routers/category.router';
 import { uploadImageRouter } from './routers/uploadImage.router';
+import { authorizeOrganizer, verifyUser } from './middalewares/auth.middleware';
+import { ErrorHandler } from './helpers/response.handler';
 
 export default class App {
   private app: Application;
@@ -34,26 +36,19 @@ export default class App {
     // this.app.use(urlencoded({ extended: true }));
   }
 
-  private handleError(): void {
-    // not found
+  private handleError() {
+    //not found handler
     this.app.use((req: Request, res: Response, next: NextFunction) => {
-      if (req.path.includes('/api/')) {
-        res.status(404).send('Not found !');
-      } else {
-        next();
-      }
+      res.status(404).send("Not found !");
     });
 
-    // error
+    //error handler
     this.app.use(
-      (err: Error, req: Request, res: Response, next: NextFunction) => {
-        if (req.path.includes('/api/')) {
-          console.error('Error : ', err.stack);
-          res.status(500).send('Error !');
-        } else {
-          next();
-        }
-      },
+      (err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
+        res.status(err.code || 500).send({
+          message: err.message,
+        });
+      }
     );
   }
 
@@ -74,7 +69,7 @@ export default class App {
     this.app.use('/api/upload-image', uploadImageRouter())
 
     //panel
-    this.app.use('/api/panel/events', panelEventRouter());
+    this.app.use('/api/panel/events', verifyUser, authorizeOrganizer, panelEventRouter());
 
     // this.app.use('/api/image', panelEventRouter());
   }

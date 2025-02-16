@@ -23,7 +23,7 @@
     "tsconfig": "^7.0.0",
     "turbo": "latest"
   },
-  "name": "finpro-nextjs-express-prisma",
+  "name": "mini-project-event",
   "packageManager": "npm@8.15.0",
   "workspaces": [
     "apps/*",

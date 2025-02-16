@@ -50,7 +50,7 @@ model Event {
   isDeleted         DateTime?
 
   event_category EventCategory  @relation(fields: [event_category_id], references: [id])
-  city           City          @relation(fields: [city_id], references: [id])
+  city           City           @relation(fields: [city_id], references: [id])
   ticket_types   TicketType[]
   transactions   Transaction[]
   reviews        Review[]

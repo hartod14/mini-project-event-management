@@ -6,27 +6,21 @@ import { hashedPassword } from '../helpers/bcrypt';
 import { compare } from 'bcrypt';
 import { getUserByEmail } from '../helpers/user.prisma';
 import { ErrorHandler } from '../helpers/response.handler';
-import { UserLogin } from '../interfaces/user.interface';
+import { IUserLogin } from '../interfaces/user.interface';
 import { sign } from 'jsonwebtoken';
 import { generateReferralCode } from '../helpers/referral-code-generator';
+import { generateAuthToken } from '../helpers/token';
 
 class AuthService {
   async signIn(req: Request) {
     const { email, password } = req.body;
 
-    const user = (await getUserByEmail(email)) as UserLogin;
+    const user = (await getUserByEmail(email)) as IUserLogin;
     if (!user) throw new ErrorHandler('wrong email', 401);
     else if (!(await compare(password, user.password as string)))
       throw new ErrorHandler('wrong password', 401);
 
-    delete user.password;
-    const access_token = sign(user, jwt_secret, {
-      expiresIn: '20m',
-    });
-
-    return {
-      access_token,
-    };
+    return await generateAuthToken(user);
   }
 
   async signUp(req: Request) {

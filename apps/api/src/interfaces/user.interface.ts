@@ -1,7 +1,7 @@
 import { IsVerified, Role } from "@prisma/client"
 import { Decimal } from "@prisma/client/runtime/library"
 
-export interface UserLogin {
+export interface IUserLogin {
     id: number
     name: string
     email: string
