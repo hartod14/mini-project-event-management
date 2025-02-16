@@ -16,15 +16,6 @@ class PanelEventController {
         }
     }
 
-    async createEvent(req: Request, res: Response, next: NextFunction) {
-        try {
-            const data = await eventService.create(req);
-            responseHandler(res, "new event has been created", data, 201);
-        } catch (error) {
-            next(error);
-        }
-    }
-
     async getEventById(req: Request, res: Response, next: NextFunction) {
         try {
             const data = await eventService.getById(req);
@@ -35,14 +26,32 @@ class PanelEventController {
         }
     }
 
-    // async deleteevent(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         await panelEventService.delete(req);
-    //         responseHandler(res, "event has been deleted");
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
+    async createEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await eventService.create(req);
+            responseHandler(res, "new event has been created", data, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await eventService.update(req);
+            responseHandler(res, "event has been updated", data, 201);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async deleteEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            await eventService.delete(req);
+            responseHandler(res, "event has been deleted");
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new PanelEventController();

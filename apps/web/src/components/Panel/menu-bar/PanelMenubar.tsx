@@ -125,8 +125,7 @@ export default function PanelMenubar({ children }: Props) {
 
         {/* Topbar */}
         <div className={`flex flex-col flex-1 min-h-screen transition-all overflow-auto ${isOpen ? "ml-64" : "ml-0 md:ml-64"}`}>
-          {/* Topbar */}
-          <div className="fixed md:left-64 top-0 left-0 flex items-center justify-between bg-gray-900 text-white p-4" style={{ width: "-webkit-fill-available" }}>
+          <div className="z-50 fixed md:left-64 top-0 left-0 flex items-center justify-between bg-gray-900 text-white p-4" style={{ width: "-webkit-fill-available" }}>
             <button className="md:hidden p-2 rounded bg-gray-700" onClick={() => setIsOpen(!isOpen)}>
               ☰
             </button>

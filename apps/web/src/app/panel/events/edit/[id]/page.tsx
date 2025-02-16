@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputFieldTextarea } from "@/components/common/inputs/InputFieldTextarea";
 import { InputSelect } from "@/components/common/inputs/InputSelect";
 import Image from "next/image";
@@ -11,19 +11,75 @@ import { FieldArray, Formik, Form, Field, ErrorMessage } from "formik";
 import { storeEventValidator } from "@/validators/event.validator";
 import { storeEventInit } from "@/helpers/formiks/event.formik";
 import Swal from "sweetalert2";
-import { createEvent } from "@/helpers/handlers/apis/event.api";
+import { createEvent, panelGetEventDetail, updateEvent } from "@/helpers/handlers/apis/event.api";
 import { InputField } from "@/components/common/inputs/InputField";
-import EventAddViewModel from "@/components/panel/pages/event/add/EventAddViewModel";
+import EventEditViewModel from "@/components/panel/pages/event/edit/EventEditViewModel";
 import Link from "next/link";
 
+type Props = {
+  params: Promise<{ id: number }>;
+};
 
-export default function PanelAddEvent() {
-  const { cities, categories, upload, refImage, loading, isLoading, image, router } = EventAddViewModel();
+export default function PanelEditEvent({ params }: Props) {
+  const { cities, categories, upload, refImage, loading, isLoading, image, router } = EventEditViewModel();
+  const [initialValues, setInitialValues] = useState<any>({
+    name: "",
+    host_name: "",
+    date: "",
+    start_time: "",
+    end_time: "",
+    address: "",
+    event_category_id: "",
+    city_id: "",
+    description: "",
+    term_condition: "",
+    status: "ACTIVE",
+    image: "",
+    ticket_types: []
+  });
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        const { id } = await params;
+        const event = (await panelGetEventDetail(id)).data;
+
+        // console.log(event);
+
+
+        if (event) {
+          setInitialValues({
+            name: event.name,
+            host_name: event.host_name,
+            date: new Date(event.date).toISOString().split('T')[0],
+            start_time: new Date(event.start_time).toTimeString().slice(0, 5),
+            end_time: new Date(event.end_time).toTimeString().slice(0, 5),
+            city_id: event.city_id,
+            event_category_id: event.event_category_id,
+            address: event.address,
+            description: event.description,
+            term_condition: event.term_condition,
+            status: event.status,
+            ticket_types: event.ticket_types || [],
+            image: event.image
+          });
+        }
+
+
+        // setEvent(response.data);
+      } catch (error) {
+        console.error("Error fetching event:", error);
+      }
+    }
+
+    fetchEvent();
+  }, [params]);
 
   return (
     <div className="">
       <Formik
-        initialValues={storeEventInit}
+        initialValues={initialValues}
+        enableReinitialize
         validationSchema={storeEventValidator}
         // onSubmit={(values) => alert(JSON.stringify(values, null, 3))}
         onSubmit={async (values) => {
@@ -37,9 +93,10 @@ export default function PanelAddEvent() {
             cancelButtonText: "Back"
           }).then(async (result) => {
             if (result.isConfirmed) {
+              const { id } = await params;
               try {
                 loading?.setLoading(true);
-                const res = await createEvent(values);
+                const res = await updateEvent(id, values);
 
                 if (res?.error) {
                   Swal.fire({
@@ -50,7 +107,7 @@ export default function PanelAddEvent() {
                 } else {
                   Swal.fire({
                     title: "Saved!",
-                    text: "Your new event has been created.",
+                    text: "Event has been updated.",
                     icon: "success",
                     confirmButtonColor: "#3085d6",
                   }).then(() => {
@@ -69,12 +126,12 @@ export default function PanelAddEvent() {
         {(formik) => (
           <Form>
             <div className="grid gap-6 mb-6 md:grid-cols-2">
-              <InputField type="text" id="name" name="name" label="Name" placeholder="" required />
-              <InputField type="text" id="host_name" name="host_name" label="Host Name" placeholder="" required />
-              <InputField type="date" id="date" name="date" label="Date" placeholder="" required />
+              <InputField id="name" type="text" name="name" label="Name" placeholder="" required />
+              <InputField id="host_name" type="text" name="host_name" label="Host Name" placeholder="" required />
+              <InputField id="date" type="date" name="date" label="Date" placeholder="" required />
               <div className="md:flex gap-2">
-                <InputField type="time" id="start_time" name="start_time" label="Start Time" placeholder="" required />
-                <InputField type="time" id="end_time" name="end_time" label="End Time" placeholder="" required />
+                <InputField id="start_time" type="time" name="start_time" label="Start Time" placeholder="" required />
+                <InputField id="end_time" type="time" name="end_time" label="End Time" placeholder="" required />
               </div>
               <InputSelect id="city_id" name="city_id" label="Select City" options={cities} required />
               <InputSelect id="event_category_id" name="event_category_id" label="Select Category" options={categories} required />
@@ -103,7 +160,7 @@ export default function PanelAddEvent() {
                   height={400}
                   onClick={() => refImage.current?.click()}
                   className="rounded h-[250] w-[250] aspect-square object-cover"
-                  src={isLoading ? "/spinner.gif" : image || DefaultImage}
+                  src={isLoading ? "/spinner.gif" : image || formik.initialValues?.image || DefaultImage}
                   alt="image"
                 />
                 <input
@@ -126,36 +183,14 @@ export default function PanelAddEvent() {
                     <label htmlFor={'ticket_types'} className="block text-sm font-medium text-gray-900 dark:text-white">
                       Ticket Level
                     </label>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        arrayHelpers.push({
-                          name: "",
-                          price: "",
-                          quota: "",
-                        })
-                      }
-                      className="bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700"
-                    >
-                      + Add Ticket
-                    </button>
                   </div>
-                  {formik.values.ticket_types.map((ticket, index) => (
+                  {formik.values.ticket_types.map((ticket: any, index: number) => (
                     <div key={index} className="flex gap-2 items-center mt-3">
                       <div className="md:flex gap-4  w-full">
                         <InputField type="text" id={`ticket_types[${index}].name`} name={`ticket_types[${index}].name`} label="" placeholder="name" required />
                         <InputField type="number" id={`ticket_types[${index}].price`} name={`ticket_types[${index}].price`} label="" placeholder="quota" required />
                         <InputField type="number" id={`ticket_types[${index}].quota`} name={`ticket_types[${index}].quota`} label="" placeholder="price" required />
                       </div>
-
-                      <button
-                        type="button"
-                        className="text-red-500 hover:text-red-700 transition duration-200"
-                        onClick={() => arrayHelpers.remove(index)}
-                      >
-                        <XCircleIcon className="w-6 h-6" />
-                      </button>
                     </div>
                   ))}
                 </div>
@@ -170,10 +205,8 @@ export default function PanelAddEvent() {
             <hr className="my-10 text-gray-50" />
             <div className="flex justify-end">
               <div className="flex gap-2">
-
                 <Link
                   href={'/panel/events'}
-                  onClick={() => router.push("/panel/events")}
                   className={"bg-gray-50 border border-gray-300 text-gray-400font-semibold px-5 py-3 rounded mb-6"}
                 >
                   Back

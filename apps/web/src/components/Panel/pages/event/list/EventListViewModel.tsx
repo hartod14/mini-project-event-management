@@ -2,7 +2,7 @@
 import ButtonAction from "@/components/common/buttons/PanelButtonAction";
 import { LoadingContext } from "@/context/LoadingContext";
 import { formatTimeOnly, formatDate } from "@/helpers/format.time";
-import { panelGetEvents } from "@/helpers/handlers/apis/event.api";
+import { deleteEvent, panelGetEvents } from "@/helpers/handlers/apis/event.api";
 import { IEventInterface } from "@/interfaces/event.interface";
 import { log } from "console";
 import { useRouter } from "next/navigation";
@@ -44,9 +44,9 @@ export default function EventsListViewModel() {
                     row.status == 'ACTIVE' ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>,
                     <ButtonAction
                         key={"button"}
-                        // onDelete={async () => {
-                        //     await deleteEventList(row.id);
-                        // }}
+                        onDelete={async () => {
+                            await deleteEventList(row.id);
+                        }}
                         onShow={() => {
                             router.push(`/panel/events/detail/${row.id}`);
                         }}
@@ -66,17 +66,18 @@ export default function EventsListViewModel() {
             // loading?.setLoading(false);
         }
     }
-    // async function deleteEventList(id: number) {
-    //     try {
-    //         loading?.setLoading(true);
-    //         await deleteEvents(id).then(() => {
-    //             getEventList();
-    //         });
-    //     } catch (error) {
-    //     } finally {
-    //         loading?.setLoading(false);
-    //     }
-    // }
+
+    async function deleteEventList(id: number) {
+        try {
+            loading?.setLoading(true);
+            await deleteEvent(id).then(() => {
+                getEventList();
+            });
+        } catch (error) {
+        } finally {
+            loading?.setLoading(false);
+        }
+    }
 
     useEffect(() => {
         getEventList();

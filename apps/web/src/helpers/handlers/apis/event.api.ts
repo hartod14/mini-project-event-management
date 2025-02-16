@@ -12,8 +12,6 @@ export const panelGetEventDetail = async (id: number) => {
 
     const data = await res.json()
 
-    console.log(data);
-
 
     return data;
 }
@@ -35,6 +33,45 @@ export const createEvent = async (newEvent: ICreateEventInterface) => {
         }
 
         return data;
+    } catch (err) {
+        return { error: err instanceof Error ? err.message : "Network error" };
+    }
+};
+
+export const updateEvent = async (id: number, updatedEvent: ICreateEventInterface) => {
+    try {
+        const res = await fetch(api_url + `panel/events/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedEvent)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            return { error: data.message || "Something went wrong" };
+        }
+
+        return data;
+    } catch (err) {
+        return { error: err instanceof Error ? err.message : "Network error" };
+    }
+};
+
+export const deleteEvent = async (id: number) => {
+    try {
+        const res = await fetch(`${api_url}panel/events/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            return { error: data.message || "Something went wrong" };
+        }
+
+        return { success: true };
     } catch (err) {
         return { error: err instanceof Error ? err.message : "Network error" };
     }

@@ -8,7 +8,7 @@ export interface IEventInterface {
     city: {
         name: string
     }
-    tickets: {
+    ticket_types: {
         id: number,
         name: string,
         price?: number,
@@ -18,8 +18,8 @@ export interface IEventInterface {
     name: string
     host_name: string
     address: string
-    description?: string
-    term_condition?: string
+    description: string
+    term_condition: string
     date: Date
     start_time: Date
     end_time: Date

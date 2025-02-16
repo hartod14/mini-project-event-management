@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, FormikProps } from "formik";
+import { ErrorMessage, Field, Formik } from "formik";
 import React from "react";
 
 interface Props {

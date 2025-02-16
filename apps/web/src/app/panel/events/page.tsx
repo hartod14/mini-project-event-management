@@ -26,12 +26,6 @@ export default function PanelEvent() {
                         className=" bg-[#f0f0f0] w-full focus:outline-none"
                         name="search"
                         onChange={(e) => setSearch(e.target.value)}
-                    // onKeyDown={(e) => {
-                    //     // if (e.key == "Enter") {
-                    //     setSearch(e.currentTarget.value)
-                    //     router.push("/panel/events/?search=" + e.currentTarget.value);
-                    //     // }
-                    // }}
                     />
                 </div>
                 <div className="flex gap-2">

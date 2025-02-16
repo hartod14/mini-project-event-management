@@ -27,19 +27,6 @@ class PanelEventService {
     //         data,
     //     });
     // }
-    // async update(req: Request) {
-    //     const id = Number(req.params.id);
-    //     const { product_name, img_src, price } = req.body;
-    //     const data: Prisma.ProductUpdateInput = {};
-    //     if (product_name) data.product_name = product_name;
-    //     if (img_src) data.img_src = img_src;
-    //     if (price) data.price = price;
-
-    //     await prisma.product.update({
-    //         data,
-    //         where: { id, isDeleted: null },
-    //     });
-    // }
     // async delete(req: Request) {
     //     const id = Number(req.params.id);
     //     await prisma.product.update({
@@ -69,7 +56,7 @@ class PanelEventService {
                     contains: String(search || ""),
                     mode: "insensitive"
                 },
-                // deleted_at: null,
+                isDeleted: null,
             },
             include: {
                 city: true,
@@ -170,6 +157,82 @@ class PanelEventService {
 
         return result;
     }
+
+    async update(req: Request) {
+        const { id } = req.params;
+        const {
+            name,
+            host_name,
+            address,
+            description,
+            term_condition,
+            date,
+            start_time,
+            end_time,
+            status,
+            image,
+            event_category_id,
+            city_id,
+            ticket_types,
+        } = req.body;
+
+        const result = await prisma.$transaction(async (tx) => {
+            const event = await tx.event.update({
+                where: { id: Number(id) },
+                data: {
+                    name,
+                    host_name,
+                    address,
+                    description,
+                    term_condition,
+                    date: new Date(date),
+                    start_time: new Date(`1970-01-01T${start_time}`),
+                    end_time: new Date(`1970-01-01T${end_time}`),
+                    status,
+                    image,
+                    slug: slugGenerator(name),
+                    event_category: {
+                        connect: { id: Number(event_category_id) },
+                    },
+                    city: {
+                        connect: { id: Number(city_id) },
+                    },
+                },
+            });
+
+            for (const ticket of ticket_types) {
+                await tx.ticketType.update({
+                    where: { id: Number(ticket.id) },
+                    data: {
+                        name: ticket.name,
+                        price: Number(ticket.price),
+                        quota: Number(ticket.quota),
+                        purchaseable_limit_time: new Date(date + "T" + end_time),
+                    },
+                });
+            }
+
+            return tx.event.findUnique({
+                where: { id: event.id },
+                include: { ticket_types: true },
+            });
+        });
+
+        return result;
+    }
+
+    async delete(req: Request) {
+        const id = Number(req.params.id);
+        await prisma.event.update({
+            data: {
+                isDeleted: new Date(),
+            },
+            where: {
+                id,
+            },
+        });
+    }
+
 }
 
 export default new PanelEventService();
