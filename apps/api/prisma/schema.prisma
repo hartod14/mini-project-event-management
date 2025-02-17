@@ -271,7 +271,7 @@ enum IsVerified {
 
 enum Role {
   CUSTOMER
-  EVENT_ORGRANIZER
+  EVENT_ORGANIZER
 }
 
 enum EventStatus {

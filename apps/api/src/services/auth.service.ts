@@ -11,6 +11,10 @@ import { sign } from 'jsonwebtoken';
 import { generateReferralCode } from '../helpers/referral-code-generator';
 import { generateAuthToken } from '../helpers/token';
 
+interface AuthenticatedRequest extends Request {
+  user?: IUserLogin;
+}
+
 class AuthService {
   async signIn(req: Request) {
     const { email, password } = req.body;
@@ -64,6 +68,12 @@ class AuthService {
         id,
       },
     });
+  }
+
+  async refreshToken(req: AuthenticatedRequest) {
+    if (!req.user?.email) throw new ErrorHandler("invalid token");
+
+    return await generateAuthToken(undefined, req.user?.email);
   }
 }
 

@@ -1,15 +1,18 @@
 /** @format */
 "use server";
-import { api } from "./apis/_api";
+import { api } from "./_api";
 import { cookies } from "next/headers";
 import { decode } from "next-auth/jwt";
-import { auth_secret } from "../config";
+import { auth_secret } from "../../config";
 
 export const login = async (credentials: Partial<Record<string, unknown>>) => {
   const res = await api("/auth", "POST", {
     body: credentials,
     contentType: "application/json",
   });
+
+  console.log(res);
+  
 
   return {
     access_token: res.data.access_token,
@@ -22,21 +25,21 @@ export const register = async (newUser: {
   first_name: string;
   last_name: string;
   password: string;
-}) => {
+}) =>
   await api("/auth/new", "POST", {
     body: newUser,
     contentType: "application/json",
-  });
-  return "New user has been registered";
-};
+  })
+    .then(() => "New user has been registered")
+    .catch((err) => (err instanceof Error ? { error: err.message } : err));
 
 export const refreshToken = async () => {
   const cookie = cookies();
-  const ftoken = (await cookie).get("authjs.session-token")?.value;
+  const ftoken = (await cookie).get("next-auth.session-token")?.value;
   const { refresh_token } = (await decode({
     token: String(ftoken),
     secret: auth_secret,
-    salt: "authjs.session-token",
+    salt: "next-auth.session-token",
   })) as { refresh_token: string };
 
   const res = await api("/auth/token", "POST", {}, refresh_token);

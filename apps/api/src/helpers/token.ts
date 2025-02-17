@@ -1,6 +1,6 @@
 /** @format */
 
-import { jwt_secret } from "../config";
+import { jwt_secret, refresh_jwt_secret } from "../config";
 import { sign } from "jsonwebtoken";
 import { IUserLogin } from "../interfaces/user.interface";
 import { getUserByEmail } from "./user.prisma";
@@ -14,5 +14,12 @@ export const generateAuthToken = async (user?: IUserLogin, email?: string) => {
   const access_token = sign(existingUser, jwt_secret, {
     expiresIn: "60m",
   });
-  return { access_token };
+  const refresh_token = sign(
+    { email: existingUser.email },
+    refresh_jwt_secret,
+    {
+      expiresIn: "1h",
+    }
+  );
+  return { access_token, refresh_token };
 };
