@@ -7,10 +7,12 @@ import React, { useRef } from "react";
 import { registerValidator } from "@/validators/auth.validator";
 import { registerInit } from "@/helpers/formiks/formik.init";
 import { register } from "@/helpers/handlers/apis/auth";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [errMessage, setErrMessage] = React.useState("");
   const open = useRef(false);
+  const router = useRouter();
 
   const formik = useFormik({
     validationSchema: registerValidator,
@@ -22,6 +24,10 @@ export default function Page() {
         else {
           open.current = true;
           formik.resetForm();
+
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
         }
       });
     },
@@ -48,28 +54,26 @@ export default function Page() {
           value={formik.values.email}
           onChange={formik.handleChange}
         />
-        <p className="mb-4 text-red-400">{formik.errors.email}</p>
         <input
           type="text"
           required
-          className="w-full p-4 mb-1 border rounded-md"
-          placeholder="Your First Name"
-          name="first_name"
-          value={formik.values.first_name}
+          className="w-full p-4 mb-1  border rounded-md"
+          placeholder="Your Phone (optional)"
+          name="phone"
+          value={formik.values.email}
           onChange={formik.handleChange}
         />
-        <p className="mb-4 text-red-400">{formik.errors.first_name}</p>
 
         <input
           type="text"
           required
           className="w-full p-4 mb-1 border rounded-md"
-          placeholder="Your Last Name"
-          name="last_name"
-          value={formik.values.last_name}
+          placeholder="Your Name"
+          name="name"
+          value={formik.values.name}
           onChange={formik.handleChange}
         />
-        <p className="mb-4 text-red-400">{formik.errors.last_name}</p>
+        <p className="mb-4 text-red-400">{formik.errors.name}</p>
 
         <input
           type="password"
@@ -90,8 +94,20 @@ export default function Page() {
           required
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
+
         />
         <p className="mb-4 text-red-400">{formik.errors.confirmPassword}</p>
+
+        <input
+          type="text"
+          className="w-full p-4 mb-1 border rounded-md"
+          placeholder="Referal code (optional)"
+          name="referral_code"
+          value={formik.values.referral_code}
+          onChange={formik.handleChange}
+        />
+        <p className="mb-4 text-red-400">{formik.errors.referral_code}</p>
+        <p className="mb-4 text-red-400">{errMessage}</p>
 
         <p className="text-xs mb-4">
           {"By registering, I agree to Kick Avenue's "}
@@ -99,14 +115,12 @@ export default function Page() {
           {" and "}
           <span className="green">Privacy Policy</span>
         </p>
-        <p className="mb-4 text-red-400">{errMessage}</p>
 
         <button
-          className={`${
-            !(formik.isValid && formik.dirty) || formik.isSubmitting
-              ? "bg-gray-300 text-gray-400"
-              : "bg-[#159953] text-white"
-          }   font-semibold p-4 w-full rounded-[50px] mb-6`}
+          className={`${!(formik.isValid && formik.dirty) || formik.isSubmitting
+            ? "bg-gray-300 text-gray-400"
+            : "bg-[#159953] text-white"
+            }   font-semibold p-4 w-full rounded-[50px] mb-6`}
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
           {formik.isSubmitting ? "Processing..." : "Register"}

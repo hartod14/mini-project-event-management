@@ -3,8 +3,7 @@
 declare module "next-auth" {
   interface User {
     id?: string | undefined;
-    first_name?: string | null | undefined;
-    last_name?: string | null | undefined;
+    name?: string | null | undefined;
     email?: string | null | undefined;
     img_src?: string | null | undefined;
     provider?: string | null | undefined;

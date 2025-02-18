@@ -16,6 +16,7 @@ model User {
   profile_photo String?    @db.Text
   referral_code String     @db.VarChar(8)
   point         Decimal    @default(0) @db.Decimal(15, 2)
+  point_expire  DateTime?  @db.Date
   is_verified   IsVerified @default(YES)
   role          Role       @default(CUSTOMER)
   created_at    DateTime   @default(now())

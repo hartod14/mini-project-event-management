@@ -20,8 +20,8 @@ export const login = async (credentials: Partial<Record<string, unknown>>) => {
 
 export const register = async (newUser: {
   email: string;
-  first_name: string;
-  last_name: string;
+  name: string;
+  phone: string;
   password: string;
 }) =>
   await api("/auth/new", "POST", {
@@ -50,8 +50,7 @@ export const refreshToken = async () => {
 
 export const updateUser = async (
   data: {
-    first_name: string;
-    last_name: string;
+    name: string;
   },
   token: string
 ) => {

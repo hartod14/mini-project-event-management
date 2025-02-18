@@ -28,19 +28,67 @@ class AuthService {
   }
 
   async signUp(req: Request) {
-    const { email, password, phone, name } = req.body;
-    const referralCode = generateReferralCode();
+    const { email, password, phone, name, referral_code } = req.body;
 
-    await prisma.user.create({
-      data: {
-        email,
-        password: await hashedPassword(password),
-        phone,
-        name,
-        referral_code: referralCode,
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      let referrerId: number | null = null;
+
+      if (referral_code) {
+        const referrer = await tx.user.findFirst({
+          where: { referral_code },
+        });
+
+        if (!referrer) {
+          throw new Error('No referral code registered');
+        }
+
+        referrerId = referrer.id;
+
+        await tx.user.update({
+          where: {
+            id: referrer.id
+          },
+          data: {
+            point: { increment: 10000 },
+            point_expire: new Date(new Date().setMonth(new Date().getMonth() + 3)),
+          },
+        });
+      }
+
+      const newReferralCode = generateReferralCode();
+
+      const newUser = await tx.user.create({
+        data: {
+          email,
+          password: await hashedPassword(password),
+          phone,
+          name,
+          referral_code: newReferralCode,
+        },
+      });
+
+      if (referrerId) {
+        await tx.referralLog.create({
+          data: {
+            user_id: newUser.id,
+            referrer_id: referrerId,
+          },
+        });
+
+        await tx.couponUser.create({
+          data: {
+            coupon_id: 1,
+            user_id: newUser.id
+          },
+        });
+      }
+
+      return newUser;
     });
+
+    return result;
   }
+
 
   async updateUser(req: Request) {
     const { password, name, phone, img_src } = req.body;

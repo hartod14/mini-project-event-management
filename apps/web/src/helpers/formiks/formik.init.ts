@@ -4,16 +4,16 @@ import { User } from "next-auth";
 
 export const registerInit = {
   email: "",
-  first_name: "",
-  last_name: "",
+  name: "",
+  phone: "",
   password: "",
   confirmPassword: "",
+  referral_code: ""
 };
 
 export const updateProfileInit = (user: User) => {
   return {
-    first_name: user.first_name || "",
-    last_name: user.last_name || "",
+    name: user.name || "",
     image: null,
     img_src: user.img_src || "",
   };

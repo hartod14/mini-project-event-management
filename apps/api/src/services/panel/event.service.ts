@@ -9,45 +9,6 @@ import { cloudinaryUpload } from "@/helpers/cloudinary";
 import { slugGenerator } from "@/helpers/slug.generator";
 
 class PanelEventService {
-    // async create(req: Request) {
-    //     const { product_name, img_src, price, userId } = req.body;
-    //     const data: Prisma.ProductCreateInput = {
-    //         product_name,
-    //         img_src,
-    //         price,
-    //         slug: slugGenerator(product_name),
-    //         User: {
-    //             connect: {
-    //                 id: userId,
-    //             },
-    //         },
-    //     };
-
-    //     await prisma.product.create({
-    //         data,
-    //     });
-    // }
-    // async delete(req: Request) {
-    //     const id = Number(req.params.id);
-    //     await prisma.product.update({
-    //         data: {
-    //             isDeleted: new Date(),
-    //         },
-    //         where: {
-    //             id,
-    //         },
-    //     });
-    // }
-    // async getBySlug(req: Request) {
-    //     const { slug } = req.params;
-    //     return await prisma.product.findUnique({
-    //         where: {
-    //             slug,
-    //             isDeleted: null,
-    //         },
-    //     });
-    // }
-
     async getList(req: Request) {
         const { page, limit, search } = req.query;
         return await prisma.event.findMany({

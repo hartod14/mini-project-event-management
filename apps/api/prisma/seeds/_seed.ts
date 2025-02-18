@@ -3,6 +3,7 @@ import { eventSeed } from './event.seed';
 import { userSeed } from './user.seed';
 import { eventCategorySeed } from './event-category.seed';
 import { citySeed } from './city.seed';
+import { couponSeed } from './coupon.seed';
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,7 @@ async function main() {
   await prisma.eventCategory.createMany({ data: eventCategorySeed });
   await prisma.event.createMany({ data: eventSeed });
   await prisma.user.createMany({ data: userSeed });
+  await prisma.coupon.createMany({ data: couponSeed });
 
 }
 

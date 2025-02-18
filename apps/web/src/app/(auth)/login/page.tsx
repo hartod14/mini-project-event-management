@@ -17,7 +17,7 @@ export default function Page() {
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
+      password: "", 
     },
     onSubmit: async (values) => {
       setErrMessage("");
