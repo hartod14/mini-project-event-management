@@ -4,7 +4,7 @@ import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { jwtDecode } from "jwt-decode";
-import { InvalidAuthError } from "@/interfaces/auth.error";
+import { InvalidAuthError } from "../interfaces/auth.error";
 import { login, refreshToken } from "./handlers/apis/auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -33,22 +33,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       async authorize(credentials) {
         try {
-          const data = await login(credentials)
-          console.log("Login Response:", data);
-          
-          return data;
+          return await login(credentials);
         } catch (error: unknown) {
           throw new InvalidAuthError(error);
         }
       },
     }),
-    // Google({
-    //   authorization: {
-    //     prompt: "consent",
-    //     access_type: "offline",
-    //     response_type: "code",
-    //   },
-    // }),
+    Google({
+      authorization: {
+        prompt: "consent",
+        access_type: "offline",
+        response_type: "code",
+      },
+    }),
   ],
   callbacks: {
     signIn({ account, profile }) {

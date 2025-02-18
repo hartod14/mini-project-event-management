@@ -1,8 +1,11 @@
 import { api_url } from "@/helpers/config"
+import { api } from "./_api";
+import { getAccessToken } from "./auth";
 
 export const getCities = async () => {
-    const res = await fetch(api_url + `cities`)
-    
-    const data = await res.json()
-    return data
+    return await api(
+        `/cities`,
+        "GET",
+        undefined
+    );
 }

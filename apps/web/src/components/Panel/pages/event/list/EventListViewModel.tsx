@@ -26,7 +26,8 @@ export default function EventsListViewModel() {
 
         const body: any = [];
 
-        const res = (await panelGetEvents(search, page, limit));
+        const res = (await panelGetEvents(search, page, limit));    
+        
         const data: IEventInterface[] = res.data
         const total_data: number = res.total_data
 

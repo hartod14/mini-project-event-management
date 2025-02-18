@@ -4,15 +4,13 @@ import { api } from "./_api";
 import { cookies } from "next/headers";
 import { decode } from "next-auth/jwt";
 import { auth_secret } from "../../config";
+import { log } from "console";
 
 export const login = async (credentials: Partial<Record<string, unknown>>) => {
   const res = await api("/auth", "POST", {
     body: credentials,
     contentType: "application/json",
   });
-
-  console.log(res);
-  
 
   return {
     access_token: res.data.access_token,
@@ -67,3 +65,24 @@ export const updateUser = async (
     token
   );
 };
+
+export const getAccessToken = async () => {
+  const cookie = cookies();
+  const token = (await cookie).get("next-auth.session-token")?.value;
+
+  if (token) {
+    const { access_token } = (await decode({
+      token: String(token),
+      secret: auth_secret,
+      salt: "next-auth.session-token",
+    })) as { access_token: string };
+
+    return access_token
+  } else {
+    return;
+  }
+
+
+
+
+}

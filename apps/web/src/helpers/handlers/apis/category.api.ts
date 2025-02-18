@@ -1,8 +1,12 @@
 import { api_url } from "@/helpers/config"
+import { api } from "./_api"
+import { getAccessToken } from "./auth"
+
 
 export const getCategories = async () => {
-    const res = await fetch(api_url + 'categories')
-
-    const data = await res.json()
-    return data
+    return await api(
+        `/categories`,
+        "GET",
+        undefined
+    );
 }

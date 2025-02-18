@@ -6,9 +6,9 @@ import { refreshToken } from "./auth";
 
 export const api = async (
   path: string,
-  method: "POST" | "GET" | "DELETE" | "PATCH",
+  method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
   data?: {
-    body?: Record<string, unknown> | FormData;
+    body?: Record<string, unknown> | FormData |String;
     contentType?: "application/json" | "application/x-www-form-urlencoded";
   },
   token?: string

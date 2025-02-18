@@ -1,12 +1,12 @@
 /** @format */
 "use client";
-import { register } from "@/helpers/handlers/auth";
 import { Alert, Snackbar } from "@mui/material";
 import { useFormik } from "formik";
 import Link from "next/link";
 import React, { useRef } from "react";
 import { registerValidator } from "@/validators/auth.validator";
 import { registerInit } from "@/helpers/formiks/formik.init";
+import { register } from "@/helpers/handlers/apis/auth";
 
 export default function Page() {
   const [errMessage, setErrMessage] = React.useState("");
