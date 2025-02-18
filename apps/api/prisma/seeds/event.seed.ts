@@ -14,7 +14,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
-    image: 'https://example.com/images/tech-conference.jpg',
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   },
   {
     event_category_id: 2,
@@ -29,7 +29,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
-    image: 'https://example.com/images/music-festival.jpg',
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 3,
@@ -44,7 +44,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
-    image: 'https://example.com/images/startup-pitch.jpg',
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   },
   {
     event_category_id: 4,
@@ -59,7 +59,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
-    image: 'https://example.com/images/food-expo.jpg',
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 5,
@@ -74,7 +74,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: 'ACTIVE',
-    image: 'https://example.com/images/film-festival.jpg',
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 1,
@@ -89,7 +89,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/tech-conference.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   },
   {
     event_category_id: 2,
@@ -104,7 +104,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/art-fair.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 3,
@@ -119,7 +119,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/music-festival.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 5,
@@ -134,7 +134,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/sports-tournament.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   },
   {
     event_category_id: 4,
@@ -149,7 +149,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/wine-tasting.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 3,
@@ -164,7 +164,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/rock-concert.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 2,
@@ -179,7 +179,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/film-festival.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 5,
@@ -194,7 +194,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/chicago-marathon.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   },
   {
     event_category_id: 1,
@@ -209,7 +209,7 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/gaming-expo.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg"
   },
   {
     event_category_id: 4,
@@ -224,6 +224,6 @@ export const eventSeed: Prisma.EventCreateManyInput[] = [
     start_time: new Date('1970-01-01T10:00:00Z'),
     end_time: new Date('1970-01-01T14:00:00Z'),
     status: "ACTIVE",
-    image: "https://example.com/images/chocolate-festival.jpg",
+    image: "https://res.cloudinary.com/dv1ehfskz/image/upload/v1739882453/ttfeiwytaz9gll6w8mzy.jpg",
   }
 ];

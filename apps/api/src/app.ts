@@ -19,6 +19,9 @@ import { categoryRouter } from './routers/category.router';
 import { uploadImageRouter } from './routers/uploadImage.router';
 import { authorizeOrganizer, verifyUser } from './middalewares/auth.middleware';
 import { ErrorHandler } from './helpers/response.handler';
+import cron from "node-cron";
+import { resetCouponExpired, resetExpiredPoints } from './services/scheduler.service';
+import { panelTransactionRouter } from './routers/panel/transaction.router';
 
 export default class App {
   private app: Application;
@@ -70,6 +73,7 @@ export default class App {
 
     //panel
     this.app.use('/api/panel/events', verifyUser, authorizeOrganizer, panelEventRouter());
+    this.app.use('/api/panel/transactions', verifyUser, authorizeOrganizer, panelTransactionRouter());
 
     // this.app.use('/api/image', panelEventRouter());
   }
@@ -80,3 +84,16 @@ export default class App {
     });
   }
 }
+
+//cron
+const scheduleTask = () => {
+  //per day
+  cron.schedule("0 0 * * *", async () => {
+    await resetExpiredPoints();
+    await resetCouponExpired();
+  });
+
+  
+};
+
+scheduleTask();

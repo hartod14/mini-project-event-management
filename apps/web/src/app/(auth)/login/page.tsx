@@ -91,32 +91,7 @@ export default function Page() {
       <center>
         <Link href={"#"} className="green font-bold ">
           Forgot password?
-        </Link>
-        <h5 className="mt-6 mb-2">Login instantly using your social media</h5>
-
-        <div className="flex justify-between">
-          <div className="border p-6 w-full mx-[5] my-[10] rounded-md cursor-pointer">
-            {/* <Image
-              alt=""
-              width={16}
-              height={8}
-              className="h-4 w-2"
-            /> */}
-          </div>
-
-          <div
-            className="border p-6 w-full mx-[5] my-[10] rounded-md cursor-pointer"
-            onClick={googleLogin}
-          >
-            {/* <Image
-              alt=""
-              src={Google}
-              width={15}
-              height={15}
-              className="h-[15] w-[15]"
-            /> */}
-          </div>
-        </div>
+        </Link>        
       </center>
     </div>
   );

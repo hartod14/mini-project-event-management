@@ -12,7 +12,7 @@ export const userSeed: Prisma.UserCreateManyInput[] = [
     referral_code: 'REF12345',
     point: 10000,
     is_verified: 'YES',
-    role: 'CUSTOMER',
+    role: 'EVENT_ORGANIZER',
   },
   {
     name: 'Bob Smith',

@@ -12,8 +12,12 @@ const statusStyles: { [key in IStatusBadgeProps["status"]]: { bg: string; dot: s
     canceled: { bg: "bg-orange-300", dot: "bg-orange-700", text: "Canceled", textColor: "text-orange-700" },
 };
 
-export default function StatusBadge({ status }: IStatusBadgeProps) {
-    const { bg, dot, text, textColor } = statusStyles[status];
+export default function StatusBadge({ status }: { status: string }) {
+    // Convert status to lowercase and check if it exists in statusStyles
+    const normalizedStatus = status.toLowerCase() as IStatusBadgeProps["status"];
+
+    // Fallback to 'waiting_for_payment' if status is invalid
+    const { bg, dot, text, textColor } = statusStyles[normalizedStatus] || statusStyles["waiting_for_payment"];
 
     return (
         <div className={`flex items-center gap-3 ${bg} px-5 py-4 rounded`}>
