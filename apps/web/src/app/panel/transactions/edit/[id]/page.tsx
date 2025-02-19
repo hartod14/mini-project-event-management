@@ -7,11 +7,11 @@ import Image from "next/image";
 import DefaultImage from "@/../public/default_image.jpg"
 import { ArrowUpTrayIcon, SignalIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { SwitchField } from "@/components/common/inputs/SwitchField";
-import { FieldArray, Formik, Form, Field, ErrorMessage } from "formik";
+import { FieldArray, Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { storeEventValidator } from "@/validators/event.validator";
 import { storeEventInit } from "@/helpers/formiks/event.formik";
 import Swal from "sweetalert2";
-import { panelGetTransactionDetail } from "@/helpers/handlers/apis/transaction.api";
+import { panelGetTransactionDetail, updateTransactionConfirmation } from "@/helpers/handlers/apis/transaction.api";
 import { InputField } from "@/components/common/inputs/InputField";
 import Link from "next/link";
 import { Transaction } from "@tiptap/pm/state";
@@ -20,19 +20,101 @@ import StatusBadge from "@/components/common/badges/StatusBadge";
 import { formatDate, formatTimeOnly } from "@/helpers/format.time";
 import { formatCurrency } from "@/helpers/format.currency";
 
+import * as Yup from 'yup';
+import { useRouter } from "next/navigation";
+
 type Props = {
   params: Promise<{ id: number }>;
 };
 
 export default function PanelEditEvent({ params }: Props) {
   // const { cities, categories, upload, refImage, loading, isLoading, image, router } = TransactionEditViewModel();
+  const router = useRouter()
   const [transaction, setTransaction] = useState<ITransactionInterface>()
+
+  const formik = useFormik({
+    initialValues: {
+      status: '',
+    },
+    validationSchema: Yup.object({
+      status: Yup.string()
+        .oneOf(['approved', 'rejected'], 'Invalid selection')
+        .required('Status is required'),
+    }),
+    onSubmit: (values) => {
+      Swal.fire({
+        title: "Confirmation this action?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#ABABAB",
+        confirmButtonText: "Yes, save it!",
+        cancelButtonText: "Back"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            if (!transaction || transaction.id === undefined) {
+              Swal.fire("Error", "Transaction data is not available.", "error");
+              return;
+            }
+            const res = await updateTransactionConfirmation(transaction?.id, transaction, values.status);
+
+            if (res?.error) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong, please try again later!",
+              });
+            } else {
+              Swal.fire({
+                title: "Saved!",
+                text: "Transaction Has been updated.",
+                icon: "success",
+                confirmButtonColor: "#3085d6",
+              }).then(() => {
+                router.push("/panel/transactions");
+              });
+            }
+          } catch (error) {
+            alert('something error')
+          } finally {
+            // loading?.setLoading(false);
+          }
+        }
+      });
+    },
+
+  });
+
   useEffect(() => {
     async function fetchTransaction() {
       try {
         const { id } = await params;
-        const data = ((await panelGetTransactionDetail(id)).data) as ITransactionInterface;
-        setTransaction(data)
+        const data = (await panelGetTransactionDetail(id)).data;
+
+        // Group tickets by ticket_type.id and count them
+        const groupedTickets = data.transaction_tickets.reduce((acc: any, ticket: any) => {
+          const { id, name, price } = ticket.ticket_type;
+
+          if (!acc[id]) {
+            acc[id] = { id, name, price, count: 0 };
+          }
+
+          acc[id].count += 1;
+          return acc;
+        }, {} as Record<number, { id: number; name: string; price: string; count: number }>);
+
+        // Calculate total tickets
+        const total_price_tickets = data.transaction_tickets.reduce(
+          (sum: number, ticket: any) => sum + Number(ticket.ticket_type.price),
+          0
+        );
+
+        setTransaction({
+          ...data,
+          grouped_tickets: Object.values(groupedTickets),
+          total_price_tickets: total_price_tickets,
+        });
 
       } catch (error) {
         console.error("Error fetching transaction:", error);
@@ -100,17 +182,13 @@ export default function PanelEditEvent({ params }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {transaction.transaction_tickets.map((transaction_ticket, index) => (
+                {transaction?.grouped_tickets?.map((ticket: any, index: any) => (
                   <tr key={index} className="bg-white dark:bg-gray-800">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {transaction_ticket.ticket_type.name}
+                      {ticket.name}
                     </th>
-                    <td className="px-6 py-4">
-                      {formatCurrency(transaction_ticket.ticket_type.price)}
-                    </td>
-                    <td className="px-6 py-4">
-                      x1
-                    </td>
+                    <td className="px-6 py-4">{formatCurrency(ticket.price)}</td>
+                    <td className="px-6 py-4">x{ticket.count}</td>
                   </tr>
                 ))}
 
@@ -123,15 +201,32 @@ export default function PanelEditEvent({ params }: Props) {
           <div className="flex flex-col gap-3">
             <div className="flex justify-between">
               <p>Total Ticket Price</p>
-              <p>{formatCurrency(transaction.total_price)}</p>
+              <p>{formatCurrency(transaction.total_price_tickets)}</p>
             </div>
-            {/* <div className="flex justify-between">
-              <p>Voucher ABC</p>
-              <p>- Rp 50.000</p>
-            </div> */}
+            {
+              transaction.voucher_event &&
+              <div className="flex justify-between">
+                <p>{transaction.voucher_event.voucher.name}</p>
+                <p>{formatCurrency(transaction.voucher_event.voucher.price)}</p>
+              </div>
+            }
+            {
+              transaction.coupon_user &&
+              <div className="flex justify-between">
+                <p>{transaction.coupon_user.coupon.name}</p>
+                <p>{formatCurrency(transaction.coupon_user.coupon.price)}</p>
+              </div>
+            }
+            {
+              transaction.point_used &&
+              <div className="flex justify-between">
+                <p>Point Used</p>
+                <p>{formatCurrency(transaction.point_used)}</p>
+              </div>
+            }
             <div className="flex justify-between">
               <p>Total Payment</p>
-              <p className="font-bold">{ }</p>
+              <p className="font-bold">{formatCurrency(transaction.total_price)}</p>
             </div>
           </div>
         </section>
@@ -149,6 +244,65 @@ export default function PanelEditEvent({ params }: Props) {
               />
             </section>
           </div>
+        }
+        {
+          transaction.payment_status == "WAITING_FOR_ADMIN_CONFIRMATION" ?
+            <form onSubmit={formik.handleSubmit} >
+              <select
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="border rounded px-4 py-2 w-full mt-5 mb-10"
+              >
+                <option disabled value="">Select Status</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              {formik.touched.status && formik.errors.status && (
+                <p className="text-red-500 text-sm">{formik.errors.status}</p>
+              )}
+
+              {/* <hr className=" text-gray-50 my-10" /> */}
+              <div className="flex justify-end">
+                <div className="flex gap-2">
+
+                  <Link
+                    href={'/panel/transactions'}
+                    onClick={() => router.push("/panel/transactions")}
+                    className={"bg-gray-50 border border-gray-300 text-gray-400font-semibold px-5 py-3 rounded mb-6"}
+                  >
+                    Back
+                  </Link>
+                  <button
+                    type="submit"
+                    className={`${!(formik.isValid && formik.dirty) || formik.isSubmitting
+                      ? "bg-gray-300 text-gray-400"
+                      : "bg-blue-900 text-white"
+                      }   font-semibold px-5 py-3 rounded mb-6`}
+                    disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+                  >
+                    {formik.isSubmitting ? "Processing..." : "Submit"}
+                  </button>
+                </div>
+              </div>
+            </form>
+            :
+            <div>
+              <hr className=" text-gray-50 my-10" />
+              <div className="flex justify-end">
+                <div className="flex gap-2">
+
+                  <Link
+                    href={'/panel/transactions'}
+                    onClick={() => router.push("/panel/transactions")}
+                    className={"bg-gray-50 border border-gray-300 text-gray-400font-semibold px-5 py-3 rounded mb-6"}
+                  >
+                    Back
+                  </Link>
+                </div>
+              </div>
+            </div>
         }
 
       </div>

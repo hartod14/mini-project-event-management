@@ -15,11 +15,23 @@ export interface ITransactionInterface {
         name: string
     }
     voucher_event_id: number
+    voucher_event: {
+        voucher: {
+            name: string
+            price: number
+        }
+    }
     coupon_user_id: number
+    coupon_user: {
+        coupon: {
+            name: string
+            price: number
+        }
+    }
     payment_method_id: number
-    payment_method : {
-        account_name:string
-        account_number:string
+    payment_method: {
+        account_name: string
+        account_number: string
     }
     transaction_number: string
     total_price: number
@@ -35,6 +47,8 @@ export interface ITransactionInterface {
             price: number
         }
     }[]
+    grouped_tickets?: any
+    total_price_tickets: number
 }
 
 export interface ICreateTransactionInterface {

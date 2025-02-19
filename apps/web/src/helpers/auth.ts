@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   session: {
     strategy: "jwt",
-    maxAge: 60 * 20,
+    maxAge: 60 * 60,
   },
   providers: [
     Credentials({

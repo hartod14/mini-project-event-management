@@ -1,3 +1,4 @@
 export function formatCurrency(amount: number): string {
-    return `Rp ${amount.toLocaleString("id-ID")}`;
+    const toNumber = Number(amount)
+    return `Rp ${toNumber.toLocaleString("id-ID")}`;
 }

@@ -1,5 +1,6 @@
 "use server"
 
+import { ITransactionInterface } from "@/interfaces/transaction.interface";
 import { api } from "./_api";
 import { getAccessToken } from "./auth";
 
@@ -25,6 +26,21 @@ export const panelGetTransactionDetail = async (id: number) => {
         undefined,
         await getAccessToken()
     );
+}
+
+export const updateTransactionConfirmation = async (id: number, updateTransaction: ITransactionInterface, status: string) => {
+    return await api(
+        `/panel/transactions/${id}}`,
+        "PATCH",
+        {
+            body: {
+                updateTransaction,
+                status
+            },
+            contentType: "application/json"
+        },
+        await getAccessToken()
+    )
 }
 
 // export const createTransaction = async (newTransaction: Record<string, unknown>) => {
