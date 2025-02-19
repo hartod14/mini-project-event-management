@@ -184,6 +184,7 @@ model Faq {
   is_active  IsActive  @default(ACTIVE)
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
+  isDeleted  DateTime?
 
   @@map("faqs")
 }
@@ -212,6 +213,17 @@ model CouponUser {
   user   User   @relation(fields: [user_id], references: [id])
 
   @@map("coupons_users")
+}
+
+model Banner {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.Text
+  image      String    @db.Text
+  is_active  IsActive  @default(ACTIVE)
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  @@map("banners")
 }
 
 model Voucher {

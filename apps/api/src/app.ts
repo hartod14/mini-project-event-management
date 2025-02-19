@@ -22,6 +22,9 @@ import { ErrorHandler } from './helpers/response.handler';
 import cron from "node-cron";
 import { resetCouponExpired, resetExpiredPoints } from './services/scheduler.service';
 import { panelTransactionRouter } from './routers/panel/transaction.router';
+import { panelFaqRouter } from './routers/panel/faq.router';
+import { panelBannerRouter } from './routers/panel/banner.router';
+import { panelCompanyInformationRouter } from './routers/panel/company-information.router';
 
 export default class App {
   private app: Application;
@@ -74,6 +77,9 @@ export default class App {
     //panel
     this.app.use('/api/panel/events', verifyUser, authorizeOrganizer, panelEventRouter());
     this.app.use('/api/panel/transactions', verifyUser, authorizeOrganizer, panelTransactionRouter());
+    this.app.use('/api/panel/faq', verifyUser, panelFaqRouter());
+    this.app.use('/api/panel/banners', verifyUser, panelBannerRouter());
+    this.app.use('/api/panel/company-information', verifyUser, panelCompanyInformationRouter());
 
     // this.app.use('/api/image', panelEventRouter());
   }
@@ -93,7 +99,7 @@ const scheduleTask = () => {
     await resetCouponExpired();
   });
 
-  
+
 };
 
 scheduleTask();
