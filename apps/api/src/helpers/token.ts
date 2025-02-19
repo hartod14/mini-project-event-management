@@ -12,13 +12,13 @@ export const generateAuthToken = async (user?: IUserLogin, email?: string) => {
   delete existingUser.password;
 
   const access_token = sign(existingUser, jwt_secret, {
-    expiresIn: "60m",
+    expiresIn: "1h",
   });
   const refresh_token = sign(
     { email: existingUser.email },
     refresh_jwt_secret,
     {
-      expiresIn: "1h",
+      expiresIn: "2h",
     }
   );
   return { access_token, refresh_token };

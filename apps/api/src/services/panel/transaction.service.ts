@@ -8,6 +8,11 @@ import { pagination } from "../../helpers/pagination";
 import { cloudinaryUpload } from "@/helpers/cloudinary";
 import { slugGenerator } from "@/helpers/slug.generator";
 
+import { transporter } from "../../helpers/nodemailer";
+import { hbs } from "../../helpers/handlebars";
+import { ErrorHandler } from "@/helpers/response.handler";
+import { convertEnumToString } from "@/helpers/format.text";
+
 class PanelTransactionService {
     async getList(req: Request) {
         const { page, limit, status } = req.query;
@@ -48,11 +53,56 @@ class PanelTransactionService {
 
                     }
                 },
-                payment_method :true,
+                coupon_user: {
+                    include: {
+                        coupon: true
+                    }
+                },
+                voucher_event: {
+                    include: {
+                        voucher: true
+                    }
+                },
+                payment_method: true,
                 user: true,
             }
         });
     }
+
+    async update(req: Request) {
+        const result = await prisma.$transaction(async (tx) => {
+            const { status, updateTransaction } = req.body;
+            const id = Number(req.params.id)
+
+            let enumStatus: PaymentStatus;
+            if (status == 'approved') {
+                enumStatus = PaymentStatus.DONE
+            } else {
+                enumStatus = PaymentStatus.REJECTED
+
+                if (updateTransaction.point_used) {
+                    await tx.user.update({
+                        where: { id: updateTransaction.user_id },
+                        data: {
+                            point: { increment: 10000 }
+                        }
+                    })
+                }
+            }
+
+            return await tx.transaction.update({
+                where: {
+                    id: updateTransaction.id
+                },
+                data: {
+                    payment_status: enumStatus
+                }
+            })
+        });
+
+        return result;
+    }
+
 
     async countTotal(req: Request) {
         const { status } = req.query
@@ -65,141 +115,28 @@ class PanelTransactionService {
         })
     }
 
-    // async create(req: Request) {
-    //     const result = await prisma.$transaction(async (tx) => {
-    //         const {
-    //             name,
-    //             host_name,
-    //             address,
-    //             description,
-    //             term_condition,
-    //             date,
-    //             start_time,
-    //             end_time,
-    //             status,
-    //             image,
-    //             event_category_id,
-    //             city_id,
-    //             ticket_types
-    //         } = req.body;
 
-    //         const event = await tx.event.create({
-    //             data: {
-    //                 name,
-    //                 host_name,
-    //                 address,
-    //                 description,
-    //                 term_condition,
-    //                 date: new Date(date),
-    //                 start_time: new Date(`1970-01-01T${start_time}`),
-    //                 end_time: new Date(`1970-01-01T${end_time}`),
-    //                 status,
-    //                 image,
-    //                 slug: slugGenerator(name),
-    //                 event_category: {
-    //                     connect: { id: Number(event_category_id) },
-    //                 },
-    //                 city: {
-    //                     connect: { id: Number(city_id) },
-    //                 },
-    //             },
-    //         });
+    async sendEmailTransactionStatus(name: string, email: string, status: string) {
+        const convertStatus = convertEnumToString(status)
+        try {
+            const compiledTemplate = hbs("transaction-status.hbs");
+            const html = compiledTemplate({
+                name,
+                email,
+                status: convertStatus
+            });
 
-    //         if (ticket_types.length > 0) {
-    //             await tx.ticketType.createMany({
-    //                 data: ticket_types.map((ticket_type: { name: string; price: number; quota: number }) => ({
-    //                     name: ticket_type.name,
-    //                     price: Number(ticket_type.price),
-    //                     quota: Number(ticket_type.quota),
-    //                     purchaseable_limit_time: new Date(date + "T" + end_time),
-    //                     event_id: event.id,
-    //                 })),
-    //             });
-    //         }
+            transporter.sendMail({
+                to: email,
+                subject: "Transaction Status",
+                html,
+            });
+            return "Success send email";
+        } catch (error) {
+            throw new ErrorHandler("Failed send email")
 
-    //         return tx.event.findUnique({
-    //             where: { id: event.id },
-    //             include: { ticket_types: true },
-    //         });
-    //     });
-
-    //     return result;
-    // }
-
-    // async update(req: Request) {
-    //     const { id } = req.params;
-    //     const {
-    //         name,
-    //         host_name,
-    //         address,
-    //         description,
-    //         term_condition,
-    //         date,
-    //         start_time,
-    //         end_time,
-    //         status,
-    //         image,
-    //         event_category_id,
-    //         city_id,
-    //         ticket_types,
-    //     } = req.body;
-
-    //     const result = await prisma.$transaction(async (tx) => {
-    //         const event = await tx.event.update({
-    //             where: { id: Number(id) },
-    //             data: {
-    //                 name,
-    //                 host_name,
-    //                 address,
-    //                 description,
-    //                 term_condition,
-    //                 date: new Date(date),
-    //                 start_time: new Date(`1970-01-01T${start_time}`),
-    //                 end_time: new Date(`1970-01-01T${end_time}`),
-    //                 status,
-    //                 image,
-    //                 slug: slugGenerator(name),
-    //                 event_category: {
-    //                     connect: { id: Number(event_category_id) },
-    //                 },
-    //                 city: {
-    //                     connect: { id: Number(city_id) },
-    //                 },
-    //             },
-    //         });
-
-    //         for (const ticket of ticket_types) {
-    //             await tx.ticketType.update({
-    //                 where: { id: Number(ticket.id) },
-    //                 data: {
-    //                     name: ticket.name,
-    //                     price: Number(ticket.price),
-    //                     quota: Number(ticket.quota),
-    //                     purchaseable_limit_time: new Date(date + "T" + end_time),
-    //                 },
-    //             });
-    //         }
-
-    //         return tx.event.findUnique({
-    //             where: { id: event.id },
-    //             include: { ticket_types: true },
-    //         });
-    //     });
-
-    //     return result;
-    // }
-
-    // async delete(req: Request) {
-    //     const id = Number(req.params.id);
-    //     await prisma.transaction.update({
-    //         data: {
-    //             isDeleted: new Date(),
-    //         },
-    //         where: {
-    //             id,
-    //         },
-    //     });
-    // }
+        }
+    }
 
 }
 
