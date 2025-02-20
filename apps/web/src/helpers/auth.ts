@@ -71,8 +71,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const user = jwtDecode(token.access_token!) as User;
         session.user.id = user.id as string;
         session.user.email = user.email as string;
-        session.user.img_src = user.img_src as string;
+        session.user.profile_photo = user.profile_photo as string;
         session.user.name = user.name as string;
+        session.user.point = user.point as string;
         session.user.role = user.role as string;
         session.user.access_token = token.access_token as string;
       }

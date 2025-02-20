@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { formatCurrency } from "@/helpers/format.currency";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -30,6 +31,10 @@ export default function PanelDashboard() {
     optionEvents,
     optionTransaction,
     loading,
+    totalUsers,
+    totalTransactions,
+    totalEarnings,
+    totalEvents,
   } = useDashboardViewModel();
 
   const [isClient, setIsClient] = useState(false);
@@ -44,6 +49,33 @@ export default function PanelDashboard() {
   return (
     <div className="p-6">
       <div className="w-full flex flex-col gap-6">
+        {/* Top Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          {/* Total Users */}
+          <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md text-center">
+            <h3 className="text-lg font-semibold">Total Users</h3>
+            <p className="text-2xl font-bold">{totalUsers}</p>
+          </div>
+
+          {/* Total Transactions */}
+          <div className="bg-green-500 text-white p-4 rounded-lg shadow-md text-center">
+            <h3 className="text-lg font-semibold">Total Transactions</h3>
+            <p className="text-2xl font-bold">{totalTransactions}</p>
+          </div>
+
+          {/* Total Earnings */}
+          <div className="bg-yellow-500 text-white p-4 rounded-lg shadow-md text-center">
+            <h3 className="text-lg font-semibold">Total Earnings</h3>
+            <p className="text-2xl font-bold">{formatCurrency(totalEarnings)}</p>
+          </div>
+
+          {/* Total Events */}
+          <div className="bg-purple-500 text-white p-4 rounded-lg shadow-md text-center">
+            <h3 className="text-lg font-semibold">Total Events</h3>
+            <p className="text-2xl font-bold">{totalEvents}</p>
+          </div>
+        </div>
+
         {/* Transactions Chart */}
         <div>
           <h2 className="font-semibold text-lg mb-2">Transaction Graphic</h2>

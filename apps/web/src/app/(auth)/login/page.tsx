@@ -3,21 +3,21 @@
 import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
-import { googleLogin, login } from "@/app/action/auth";
+import { login } from "@/app/action/auth";
 
 export default function Page() {
   const { push } = useRouter();
   const open = useRef(false);
-  const [errMessage, setErrMessage] = React.useState("");
+  const [errMessage, setErrMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "", 
+      password: "",
     },
     onSubmit: async (values) => {
       setErrMessage("");
@@ -33,66 +33,64 @@ export default function Page() {
   });
 
   return (
-    <div className=" w-full max-w-[450px]">
-      <div className="mb-4">
-        <h4 className=" text-[21px] font-bold mb-1">Login</h4>
-        <h5 className="mb-2">
-          {"Don't have an account? "}
-          <Link href={"/register"} className="green font-semibold">
-            Sign up here
+    <div>
+      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">
+        <div className="mb-6 text-center">
+          <h4 className="text-2xl font-bold mb-2">Login</h4>
+          <p className="text-gray-600">
+            Don't have an account?{' '}
+            <Link href="/register" className="text-green-600 font-semibold">
+              Sign up here
+            </Link>
+          </p>
+        </div>
+        <form className="space-y-4" onSubmit={formik.handleSubmit}>
+          <input
+            type="email"
+            required
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Email Address"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+          />
+          <input
+            type="password"
+            required
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+          />
+          {errMessage && <p className="text-sm text-red-600">{errMessage}</p>}
+          <button
+            className={`w-full p-3 rounded-md text-white font-semibold transition-all duration-200 ease-in-out ${
+              formik.isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+            }`}
+            disabled={formik.isSubmitting}
+          >
+            {formik.isSubmitting ? "Processing..." : "Login"}
+          </button>
+        </form>
+        <div className="mt-4 text-center">
+          <Link href="#" className="text-green-600 font-semibold">
+            Forgot password?
           </Link>
-        </h5>
+        </div>
       </div>
-      <form className="w-full" onSubmit={formik.handleSubmit}>
-        <input
-          type="email"
-          required
-          className="w-full p-4 mb-4 border rounded-md"
-          placeholder="Email Address"
-          name="email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-        />
-
-        <input
-          type="password"
-          className="w-full p-4 mb-4 border rounded-md"
-          placeholder="Password"
-          name="password"
-          required
-          value={formik.values.password}
-          onChange={formik.handleChange}
-        />
-        <p className="text-sm capitalize text-red-600 mb-4 ">{errMessage}</p>
-        <button
-          className={`${
-            formik.isSubmitting
-              ? "bg-gray-300 text-gray-400"
-              : "bg-[#159953] text-white"
-          }  font-semibold p-4 w-full rounded-[50px] mb-6`}
-          disabled={formik.isSubmitting}
-        >
-          {formik.isSubmitting ? "Processing..." : "Login"}
-        </button>
-      </form>
       <Snackbar
         open={open.current}
         autoHideDuration={1500}
         onClose={() => {
           open.current = false;
         }}
-        message="Login Success"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
           Login Success
         </Alert>
       </Snackbar>
-      <center>
-        <Link href={"#"} className="green font-bold ">
-          Forgot password?
-        </Link>        
-      </center>
     </div>
   );
 }

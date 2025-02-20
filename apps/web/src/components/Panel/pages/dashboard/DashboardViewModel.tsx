@@ -17,14 +17,28 @@ export default function useDashboardViewModel() {
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch Data
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [totalTransactions, setTotalTransactions] = useState<number>(0);
+  const [totalEarnings, setTotalEarnings] = useState<number>(0);
+  const [totalEvents, setTotalEvents] = useState<number>(0);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const data = (await panelGetDashboard()).data;
-
         setTransactions(data.transactions || []);
-        setEvents(data.events || []);
+        setEvents(
+          data.events.map((e: any) => ({
+            id: e.id,
+            created_at: e.name,
+          })) || []
+        );
+
+
+        setTotalUsers(data.totalUsers || 0);
+        setTotalTransactions(data.totalTransactions || 0);
+        setTotalEarnings(data.totalEarnings || 0);
+        setTotalEvents(data.totalEvents || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -34,7 +48,10 @@ export default function useDashboardViewModel() {
     fetchData();
   }, []);
 
-  const [valueOption, setValueOption] = useState({ transaction: "month", events: "month" });
+  const [valueOption, setValueOption] = useState({
+    transaction: "month",
+    events: "month",
+  });
 
   function onChangeOption(key: "transaction" | "events", value: string) {
     setValueOption((prev) => ({ ...prev, [key]: value }));
@@ -46,35 +63,42 @@ export default function useDashboardViewModel() {
     { label: "Day", value: "day" },
   ];
 
-  const optionEvents = [
-    { label: "Month", value: "month" },
-    { label: "Year", value: "year" },
-    { label: "Day", value: "day" },
-  ];
+  const optionEvents = [...optionTransaction];
 
   const optionsTransactionChart = { responsive: true };
   const optionsEventChart = { responsive: true };
 
-  // Group transactions by created_at date
+  const formatDate = (dateString: string, filter: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null;
+
+    switch (filter) {
+      case "year":
+        return date.getFullYear().toString();
+      case "month":
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      case "day":
+      default:
+        return date.toISOString().split("T")[0];
+    }
+  };
+
   const transactionCounts = transactions.reduce((acc: Record<string, number>, t) => {
-    const date = new Date(t.created_at).toISOString().split("T")[0]; // Format: YYYY-MM-DD
-    acc[date] = (acc[date] || 0) + t.total_price;
+    const formattedDate = formatDate(t.created_at, valueOption.transaction);
+    if (!formattedDate) return acc;
+
+    acc[formattedDate] = (acc[formattedDate] || 0) + t.total_price;
     return acc;
   }, {});
 
-  // Group events by created_at date
   const eventCounts = events.reduce((acc: Record<string, number>, e) => {
-    if (!e.created_at) return acc; // Skip if created_at is missing or invalid
+    const formattedDate = formatDate(e.created_at, valueOption.events);
+    if (!formattedDate) return acc;
 
-    const timestamp = Date.parse(e.created_at); // Try parsing the date
-    if (isNaN(timestamp)) return acc; // Skip if not a valid date
-
-    const date = new Date(timestamp).toISOString().split("T")[0]; // Format: YYYY-MM-DD
-    acc[date] = (acc[date] || 0) + 1;
+    acc[formattedDate] = (acc[formattedDate] || 0) + 1;
     return acc;
   }, {});
 
-  // Sort the labels (dates) for proper visualization
   const transactionLabels = Object.keys(transactionCounts).sort();
   const eventLabels = Object.keys(eventCounts).sort();
 
@@ -89,7 +113,6 @@ export default function useDashboardViewModel() {
       },
     ],
   };
-
   const dataEvent = {
     labels: eventLabels,
     datasets: [
@@ -112,5 +135,9 @@ export default function useDashboardViewModel() {
     optionEvents,
     optionTransaction,
     loading,
+    totalUsers,
+    totalTransactions,
+    totalEarnings,
+    totalEvents,
   };
 }

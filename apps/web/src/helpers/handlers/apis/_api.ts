@@ -5,10 +5,11 @@ import { jwtDecode } from "jwt-decode";
 import { refreshToken } from "./auth";
 
 export const api = async (
+
   path: string,
   method: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
   data?: {
-    body?: Record<string, unknown> | FormData |String;
+    body?: Record<string, unknown> | FormData | String;
     contentType?: "application/json" | "application/x-www-form-urlencoded";
   },
   token?: string
@@ -29,6 +30,10 @@ export const api = async (
       data?.body instanceof FormData ? data.body : JSON.stringify(data?.body),
     headers,
   });
+
+  if (res.status == 403) {
+    throw new Error("forbidden");
+  }
 
   const json = await res.json();
   if (res.status > 299) throw new Error(json.message);

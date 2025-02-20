@@ -15,6 +15,6 @@ export const updateProfileInit = (user: User) => {
   return {
     name: user.name || "",
     image: null,
-    img_src: user.img_src || "",
+    profile_photo: user.profile_photo || "",
   };
 };

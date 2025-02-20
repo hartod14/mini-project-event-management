@@ -5,7 +5,8 @@ declare module "next-auth" {
     id?: string | undefined;
     name?: string | null | undefined;
     email?: string | null | undefined;
-    img_src?: string | null | undefined;
+    profile_photo?: string | null | undefined;
+    point?: string | null | undefined;
     provider?: string | null | undefined;
     access_token?: string | undefined;
     refresh_token?: string | undefined;

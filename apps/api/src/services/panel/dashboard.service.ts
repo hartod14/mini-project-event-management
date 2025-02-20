@@ -18,6 +18,14 @@ class PanelDashboardService {
       },
     });
 
+    const totalUsers = await prisma.user.count();
+    const totalTransactions = await prisma.transaction.count();
+    const totalEarnings = await prisma.transaction.aggregate({
+      _sum: { total_price: true },
+    });
+
+    const totalEvents = await prisma.event.count();
+
     return {
       transactions: transactions.map((t) => ({
         id: t.id,
@@ -28,6 +36,10 @@ class PanelDashboardService {
         id: e.id,
         name: e.created_at,
       })),
+      totalUsers,
+      totalTransactions,
+      totalEarnings: totalEarnings._sum.total_price || 0,
+      totalEvents,
     };
   }
 }

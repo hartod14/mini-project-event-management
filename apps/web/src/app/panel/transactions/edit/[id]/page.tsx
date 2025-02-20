@@ -92,7 +92,6 @@ export default function PanelEditEvent({ params }: Props) {
         const { id } = await params;
         const data = (await panelGetTransactionDetail(id)).data;
 
-        // Group tickets by ticket_type.id and count them
         const groupedTickets = data.transaction_tickets.reduce((acc: any, ticket: any) => {
           const { id, name, price } = ticket.ticket_type;
 
@@ -104,7 +103,6 @@ export default function PanelEditEvent({ params }: Props) {
           return acc;
         }, {} as Record<number, { id: number; name: string; price: string; count: number }>);
 
-        // Calculate total tickets
         const total_price_tickets = data.transaction_tickets.reduce(
           (sum: number, ticket: any) => sum + Number(ticket.ticket_type.price),
           0

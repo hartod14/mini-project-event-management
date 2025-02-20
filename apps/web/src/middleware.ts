@@ -20,6 +20,18 @@ export async function middleware(request: NextRequest) {
   )
     return NextResponse.redirect(new URL("/login", request.nextUrl)); // user only
 
+  if (
+    (pathname.startsWith("/panel/dashboard") ||
+      pathname.startsWith("/panel/voucher") ||
+      pathname.startsWith("/panel/events") ||
+      pathname.startsWith("/panel/transactions") ||
+      pathname.startsWith("/panel/banners") ||
+      pathname.startsWith("/panel/faqs") ||
+      pathname.startsWith("/panel/contact-information")
+    ) && session?.user?.role == "CUSTOMER") {
+    return NextResponse.redirect(new URL("/panel/ticket", request.nextUrl));
+  }
+
   return NextResponse.next();
 }
 
