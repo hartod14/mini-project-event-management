@@ -24,10 +24,7 @@ export default function Page() {
         else {
           open.current = true;
           formik.resetForm();
-
-          setTimeout(() => {
-            router.push("/login");
-          }, 1000);
+          router.push("/login");
         }
       });
     },
@@ -110,11 +107,10 @@ export default function Page() {
             <span className="text-green-600">Privacy Policy</span>
           </p>
           <button
-            className={`${
-              !(formik.isValid && formik.dirty) || formik.isSubmitting
+            className={`${!(formik.isValid && formik.dirty) || formik.isSubmitting
                 ? "bg-gray-300 text-gray-400"
                 : "bg-green-600 text-white"
-            } font-semibold p-4 w-full rounded-full transition duration-300 hover:bg-green-700 disabled:bg-gray-300`}
+              } font-semibold p-4 w-full rounded-full transition duration-300 hover:bg-green-700 disabled:bg-gray-300`}
             disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
           >
             {formik.isSubmitting ? "Processing..." : "Register"}

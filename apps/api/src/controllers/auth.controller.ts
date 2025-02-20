@@ -39,6 +39,34 @@ class AuthController {
       next(error);
     }
   }
+
+  async forgetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await authService.forgetPassword(req);
+      await authService.sendEmailForgetPassword(user.email, String(user.forget_password_token));
+      responseHandler(res, "reset password has been sent to email")
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async resetPasswordCheck(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await authService.resetPasswordCheck(req);
+      responseHandler(res, "credential valid", data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await authService.resetPassword(req);
+      responseHandler(res, "success reset password", data)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default new AuthController();

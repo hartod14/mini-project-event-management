@@ -10,6 +10,10 @@ import { IUserLogin } from '../interfaces/user.interface';
 import { sign } from 'jsonwebtoken';
 import { generateReferralCode } from '../helpers/referral-code-generator';
 import { generateAuthToken } from '../helpers/token';
+import { transporter } from "../helpers/nodemailer";
+import { hbs } from "../helpers/handlebars";
+import { generateRandomString } from '@/helpers/random-string';
+import { log } from 'console';
 
 interface AuthenticatedRequest extends Request {
   user?: IUserLogin;
@@ -122,6 +126,72 @@ class AuthService {
     if (!req.user?.email) throw new ErrorHandler("invalid token");
 
     return await generateAuthToken(undefined, req.user?.email);
+  }
+
+  async forgetPassword(req: Request) {
+    const { email } = req.body
+    return await prisma.user.update({
+      where: { email },
+      data: {
+        forget_password_token: generateRandomString(30)
+      }
+    })
+  }
+
+  async resetPasswordCheck(req: Request) {
+    const { token } = req.query
+
+    if (!token || typeof token !== "string") {
+      throw new Error("Token is required and must be a string.");
+    }
+
+    return await prisma.user.findFirstOrThrow({
+      where: { forget_password_token: token },
+      select: {
+        id: true
+      }
+    })
+  }
+
+  async resetPassword(req: Request) {
+    const { id } = req.params
+    const { password, token } = req.body
+
+    const userID = Number(id)
+
+    // if (!id) {
+    //   throw new Error("Token is required and must be a string.");
+    // }
+
+    return await prisma.user.update({
+      where: {
+        id: userID,
+        forget_password_token: token
+      },
+      data: {
+        password: await hashedPassword(password)
+      }
+    })
+  }
+
+  async sendEmailForgetPassword(email: string, token: string) {
+    try {
+      const compiledTemplate = hbs("forget-password.hbs");
+      const html = compiledTemplate({
+        email,
+        token,
+      });
+
+      transporter.sendMail({
+        to: email,
+        subject: "Forget Password Request",
+        html,
+      });
+      return "Success send email";
+    } catch (error) {
+      throw new ErrorHandler("Failed send email")
+
+    }
   }
 }
 

@@ -91,7 +91,7 @@ export default function PanelMenubar({ children }: Props) {
                 <Link href={"/panel/ticket"} onClick={() => setIsOpen(false)} className={`flex gap-3 p-3 rounded ${activeMenu == "/panel/ticket" ? "bg-gray-700" : "hover:bg-gray-700"
                   }`}>
                   <Image
-                    src={`/panel/voucher.svg`}
+                    src={`/panel/ticket.svg`}
                     width={20}
                     height={20}
                     className="w-[18px] h-[18px]"
