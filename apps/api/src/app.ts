@@ -25,6 +25,8 @@ import { panelTransactionRouter } from './routers/panel/transaction.router';
 import { panelFaqRouter } from './routers/panel/faq.router';
 import { panelBannerRouter } from './routers/panel/banner.router';
 import { panelCompanyInformationRouter } from './routers/panel/company-information.router';
+import { panelVoucherRouter } from './routers/panel/voucher.router';
+import { panelDashboardRouter } from './routers/panel/dashboard.router';
 
 export default class App {
   private app: Application;
@@ -77,9 +79,11 @@ export default class App {
     //panel
     this.app.use('/api/panel/events', verifyUser, authorizeOrganizer, panelEventRouter());
     this.app.use('/api/panel/transactions', verifyUser, authorizeOrganizer, panelTransactionRouter());
-    this.app.use('/api/panel/faq', verifyUser, panelFaqRouter());
-    this.app.use('/api/panel/banners', verifyUser, panelBannerRouter());
-    this.app.use('/api/panel/company-information', verifyUser, panelCompanyInformationRouter());
+    this.app.use('/api/panel/vouchers', verifyUser, authorizeOrganizer, panelVoucherRouter())
+    this.app.use('/api/panel/faq', verifyUser, authorizeOrganizer, panelFaqRouter());
+    this.app.use('/api/panel/banners', verifyUser, authorizeOrganizer, panelBannerRouter());
+    this.app.use('/api/panel/company-information', verifyUser, authorizeOrganizer, panelCompanyInformationRouter());
+    this.app.use('/api/panel/dashboard', verifyUser, authorizeOrganizer, panelDashboardRouter());
 
     // this.app.use('/api/image', panelEventRouter());
   }

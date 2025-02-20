@@ -20,7 +20,7 @@ export default function PanelMenubar({ children }: Props) {
   ];
 
   const adminMenus = [
-    { name: "Dashboard", path: "/panel/dashboards" },
+    { name: "Dashboard", path: "/panel/dashboard" },
     { name: "Voucher", path: "/panel/vouchers" },
     { name: "Event", path: "/panel/events" },
     { name: "Transaction", path: "/panel/transactions" },
