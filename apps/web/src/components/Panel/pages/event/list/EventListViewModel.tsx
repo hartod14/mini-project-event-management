@@ -26,8 +26,8 @@ export default function EventsListViewModel() {
 
         const body: any = [];
 
-        const res = (await panelGetEvents(search, page, limit));                  
-        
+        const res = (await panelGetEvents(search, page, limit));
+
         const data: IEventInterface[] = res.data
         const total_data: number = res.total_data
 
@@ -53,6 +53,9 @@ export default function EventsListViewModel() {
                         }}
                         onUpdate={() => {
                             router.push(`/panel/events/edit/${row.id}`);
+                        }}
+                        onList={() => {
+                            router.push(`/panel/events/transaction/${row.id}`);
                         }}
                     />,
                 ]);

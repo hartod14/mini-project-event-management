@@ -9,7 +9,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
-    (pathname.startsWith("/login") || pathname.startsWith("/register")) &&
+    (pathname.startsWith("/login") ||
+      pathname.startsWith("/register") ||
+      pathname.startsWith("/forget-password")
+    ) &&
     session?.user?.id
   )
     return NextResponse.redirect(new URL("/", request.nextUrl)); // guest only
@@ -27,7 +30,7 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith("/panel/transactions") ||
       pathname.startsWith("/panel/banners") ||
       pathname.startsWith("/panel/faqs") ||
-      pathname.startsWith("/panel/contact-information")
+      pathname.startsWith("/panel/company-information")
     ) && session?.user?.role == "CUSTOMER") {
     return NextResponse.redirect(new URL("/panel/ticket", request.nextUrl));
   }

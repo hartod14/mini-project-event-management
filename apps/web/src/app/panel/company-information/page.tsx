@@ -199,7 +199,7 @@ export default function PanelContactInformation() {
               <div className="flex justify-end">
                 <div className="flex gap-2">
                   <Link
-                    href={'/panel/contact-information'}
+                    href={'/panel/company-information'}
                     className={
                       'bg-gray-50 border border-gray-300 text-gray-400font-semibold px-5 py-3 rounded mb-6'
                     }

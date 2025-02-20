@@ -27,6 +27,19 @@ export const panelGetEventDetail = async (id: number) => {
     );
 }
 
+export const panelGetEventTransaction = async (
+    id: any,
+    page: number,
+    limit: number,
+) => {
+    return await api(
+        `/panel/events/${id}/transaction?page=${page}&limit=${limit}`,
+        'GET',
+        undefined,
+        await getAccessToken(),
+    );
+};
+
 export const createEvent = async (newEvent: Record<string, unknown>) => {
     try {
         return await api(

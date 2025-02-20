@@ -65,6 +65,41 @@ export const updateUser = async (
   );
 };
 
+export const updateUserNew = async (data: Record<string, unknown>) => {
+  await api(
+    '/auth/update',
+    'PATCH',
+    {
+      body: data,
+      contentType: 'application/json',
+    },
+    await getAccessToken(),
+  );
+};
+
+export const changePassword = async (data: Record<string, unknown>) => {
+  await api(
+    '/auth/password/change',
+    'PATCH',
+    {
+      body: data,
+      contentType: 'application/json',
+    },
+    await getAccessToken(),
+  );
+};
+
+export const forgetPassword = async (data: Record<string, unknown>) => {  
+  await api(
+    '/auth/forget-password',
+    'POST',
+    {
+      body: data,
+      contentType: 'application/json',
+    },
+  );
+};
+
 export const getAccessToken = async () => {
   const cookie = cookies();
   const token = (await cookie).get("next-auth.session-token")?.value;

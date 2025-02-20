@@ -74,7 +74,7 @@ export default function Page() {
           </button>
         </form>
         <div className="mt-4 text-center">
-          <Link href="#" className="text-green-600 font-semibold">
+          <Link href={"/forget-password"} className="text-green-600 font-semibold">
             Forgot password?
           </Link>
         </div>

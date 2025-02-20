@@ -52,6 +52,18 @@ class PanelEventController {
             next(error);
         }
     }
+
+    async getListTransaction(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await panelEventService.getListTransaction(req);
+            const total_data = await panelEventService.countTotalTransaction(req)
+            responsHandlerPagination(res, "success get transaction data", data, total_data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    
 }
 
 export default new PanelEventController();

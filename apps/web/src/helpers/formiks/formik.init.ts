@@ -18,3 +18,11 @@ export const updateProfileInit = (user: User) => {
     profile_photo: user.profile_photo || "",
   };
 };
+
+export const profileInit = {
+  name: "",
+  phone: "",
+  email: "",
+  profile_photo: ""
+}
+

@@ -16,7 +16,7 @@ class UploadImageService {
         return secure_url
         // await prisma.user.update({
         //     data: {
-        //         img_src: secure_url,
+        //         profile_photo: secure_url,
         //     },
         //     where: {
         //         id,

@@ -93,15 +93,15 @@ class AuthService {
     return result;
   }
 
-
   async updateUser(req: Request) {
-    const { password, name, phone, img_src } = req.body;
+    const { password, name, phone, profile_photo, email } = req.body;
     const id = Number((req as any).user?.id);
     const data: Prisma.UserUpdateInput = {};
-    if (img_src) data.profile_photo = img_src;
+    if (profile_photo) data.profile_photo = profile_photo;
     if (password) data.password = password;
     if (name) data.name = name;
     if (phone) data.phone = phone;
+    if (email) data.email = email;
 
     await prisma.user.update({
       data,
@@ -115,9 +115,37 @@ class AuthService {
         name: true,
         role: true,
         profile_photo: true,
+        phone: true,
       },
       where: {
         id,
+      },
+    });
+  }
+
+  async changePassword(req: Request) {
+    const { password, new_password, confirm_new_password } = req.body;
+
+    const email = (req as any).user?.email;
+    const user = (await getUserByEmail(email)) as IUserLogin
+    if (new_password != confirm_new_password)
+      throw new ErrorHandler(
+        'new password and confirm new passwod not same',
+        401,
+      );
+
+    if (!(await compare(password, user.password as string)))
+      throw new ErrorHandler(
+        'wrong password',
+        401
+      );
+
+    await prisma.user.update({
+      data: {
+        password: await hashedPassword(new_password),
+      },
+      where: {
+        id: user.id,
       },
     });
   }

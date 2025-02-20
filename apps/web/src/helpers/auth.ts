@@ -75,9 +75,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.name = user.name as string;
         session.user.point = user.point as string;
         session.user.role = user.role as string;
+        session.user.referral_code = user.referral_code as string;
         session.user.access_token = token.access_token as string;
+        session.user.phone = user.phone as string;
       }
-
+      
       return session;
     },
   },

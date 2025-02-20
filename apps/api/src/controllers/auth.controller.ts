@@ -31,6 +31,15 @@ class AuthController {
     }
   }
 
+  async changePassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await authService.changePassword(req);
+      responseHandler(res, 'change password success', data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await authService.refreshToken(req);

@@ -1,6 +1,6 @@
 /** @format */
 
-import { Prisma } from "@prisma/client";
+import { PaymentStatus, Prisma } from "@prisma/client";
 import { Request } from "express";
 // import { slugGenerator } from "../helpers/slug.generator";
 import { prisma } from "../../config";
@@ -56,6 +56,15 @@ class PanelEventService {
                 }
             }
         })
+    }
+    async countTotalTransaction(req: Request) {
+        const id = Number(req.params.id);
+        return await prisma.transaction.count({
+            where: {
+                event_id: id,
+                payment_status: 'DONE',
+            },
+        });
     }
 
     async create(req: Request) {
@@ -191,6 +200,40 @@ class PanelEventService {
             where: {
                 id,
             },
+        });
+    }
+
+    async getListTransaction(req: Request) {
+        const { page, limit, status, search } = req.query;
+        const id = Number(req.params.id);
+        const paymentStatusEnum =
+            PaymentStatus[status as keyof typeof PaymentStatus];
+
+        return await prisma.transaction.findMany({
+            where: {
+                payment_status: 'DONE',
+                event_id: id,
+                user: {
+                    name: {
+                        contains: String(search || ''),
+                        mode: 'insensitive',
+                    },
+                },
+            },
+            include: {
+                transaction_tickets: {
+                    include: {
+                        ticket_type: true,
+                    },
+                },
+                event: true,
+                user: true,
+            },
+            orderBy: {
+                created_at: 'desc',
+            },
+
+            ...pagination(Number(page), Number(limit)),
         });
     }
 

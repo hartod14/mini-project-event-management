@@ -48,10 +48,10 @@ class eventService {
   // }
   async update(req: Request) {
     const id = Number(req.params.id);
-    const { event_name, img_src, price } = req.body;
+    const { event_name, profile_photo, price } = req.body;
     const data: Prisma.EventUpdateInput = {};
     if (event_name) data.name = event_name;
-    if (img_src) data.image = img_src;
+    if (profile_photo) data.image = profile_photo;
 
     await prisma.event.update({
       data,
